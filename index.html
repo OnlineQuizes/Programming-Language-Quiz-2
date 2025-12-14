@@ -247,9 +247,14 @@
     }
     
     [data-theme="dark"] .btn-explanation {
-        border-color: var(--secondary-color);
-        color: var(--secondary-color);
-        background: rgba(255,255,255,0.05);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: rgba(56, 178, 172, 0.1);
+    }
+    
+    [data-theme="dark"] .btn-explanation:hover {
+        background: var(--primary-color);
+        color: #1a202c;
     }
 
     .explanation-content {
@@ -1417,7 +1422,7 @@ Dr Abdullah</p></div>
         </div>
 
         <div class="footer-note">
-            دعواتكم للمساعد الخفي والعاملين على الموقع بالتوفيق والسداد والزوجة الصالحة
+            Good luck to everyone!
         </div>
     </div>
 
@@ -1771,12 +1776,13 @@ Dr Abdullah</p></div>
                         </div>
                     `;
                 } else {
+                    // Correct format as requested
                     resultHtml = `❌ Incorrect.`;
                     answerBox.classList.add('incorrect');
                     answerBox.classList.remove('correct');
                     questionContainer.classList.add('answered-incorrect');
                     
-                    // Add the Show Correct Choice button
+                    // Add the Show Correct Choice button which reveals answer AND explanation immediately
                     answerBox.innerHTML = `
                         ${resultHtml}
                         <button class="btn-show-correct" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
