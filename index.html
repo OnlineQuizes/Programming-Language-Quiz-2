@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Languages Quiz 2 - Names, Bindings & Scopes</title>
+    <style>
+    :root {
+        --bg-color: #f8fafc;
+        --text-color: #161b24;
+        --primary-color: #2a676f;
+        --secondary-color: #3a8893;
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --border-color: rgba(224, 224, 224, 0.7);
+        --option-bg: #f8fafc;
+        --option-hover-bg: #e2e8f0;
+        --quiz-header-bg: linear-gradient(135deg, #2a676f 0%, #3a8893 100%);
+        --correct-bg: #e8f5e9;
+        --correct-border: #43a047;
+        --incorrect-bg: #ffebee;
+        --incorrect-border: #e53935;
+        --gradient-color: rgba(42, 103, 111, 0.03);
+        --background-pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232a676f' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/svg%3E");
+        --slide-bg: #ffffff;
+        --slide-header: #2a676f;
+        --slide-border: #d1d5db;
+        --grammar-bg: #f1f5f9;
+        --grammar-border: #cbd5e1;
+        --glass-bg: rgba(42, 103, 111, 0.1);
+        --glass-border: rgba(42, 103, 111, 0.2);
+        --glass-shadow: 0 4px 20px rgba(42, 103, 111, 0.15);
+        --button-primary-bg: linear-gradient(135deg, #2a676f, #3a8893);
+        --button-secondary-bg: linear-gradient(135deg, #a98a50, #c5a66a);
+        --highlight-bg: #fff3cd;
+        --highlight-text: #856404;
+        --highlight-border: #ffeeba;
+        /* Explanation Gold Theme */
+        --expl-bg: #fffde7;
+        --expl-border: #fbc02d;
+        --expl-text: #5d4037;
+    }
+
+    [data-theme="dark"] {
+        --bg-color: #1a202c;
+        --text-color: #e2e8f0;
+        --primary-color: #38b2ac;
+        --secondary-color: #2a676f;
+        --card-bg: rgba(26, 32, 44, 0.95);
+        --border-color: rgba(74, 85, 104, 0.7);
+        --option-bg: rgba(45, 55, 72, 0.5);
+        --option-hover-bg: rgba(66, 153, 225, 0.1);
+        --quiz-header-bg: linear-gradient(135deg, #2a676f 0%, #3a8893 100%);
+        --correct-bg: rgba(72, 187, 120, 0.1);
+        --correct-border: #48bb78;
+        --incorrect-bg: rgba(245, 101, 101, 0.1);
+        --incorrect-border: #f56565;
+        --gradient-color: transparent;
+        --background-pattern: none;
+        --slide-bg: #2d3748;
+        --slide-header: #38b2ac;
+        --slide-border: #4a5568;
+        --grammar-bg: #4a5568;
+        --grammar-border: #718096;
+        --glass-bg: rgba(56, 178, 172, 0.1);
+        --glass-border: rgba(56, 178, 172, 0.2);
+        --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        --button-primary-bg: linear-gradient(135deg, #38b2ac, #2a676f);
+        --button-secondary-bg: linear-gradient(135deg, #f6ad55, #ed8936);
+        --highlight-bg: rgba(245, 158, 11, 0.2);
+        --highlight-text: #fef3c7;
+        --highlight-border: rgba(245, 158, 11, 0.4);
+        /* Explanation Gold Theme Dark */
+        --expl-bg: rgba(251, 192, 45, 0.15);
+        --expl-border: #fdd835;
+        --expl-text: #fff9c4;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        background-image: 
+            linear-gradient(to right, var(--gradient-color) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--gradient-color) 1px, transparent 1px),
+            var(--background-pattern);
+        background-size: 
+            40px 40px,
+            40px 40px,
+            52px 26px;
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    .quiz-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .quiz-container::before {
+        content: '💻🧠📚';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        font-size: 120px;
+        opacity: 0.05;
+        transform: rotate(15deg);
+        z-index: 0;
+    }
+
+    .quiz-header {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: white;
+        padding: 1.5rem;
+        background: var(--quiz-header-bg);
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(42, 103, 111, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .quiz-header::after {
+        content: '📘';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.15;
+        font-size: 3rem;
+    }
+
+    .quiz-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: var(--glass-bg);
+        border-radius: 10px;
+        border-left: 5px solid var(--primary-color);
+    }
+
+    .controls {
+        text-align: center;
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.8rem;
+        background: var(--button-primary-bg);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(42, 103, 111, 0.2);
+        position: relative;
+        overflow: hidden;
+        min-width: 160px;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(42, 103, 111, 0.3);
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-secondary {
+        background: var(--button-secondary-bg);
+    }
+
+    .btn-icon {
+        font-size: 1.1rem;
+    }
+
+    /* Explanation Gold Styles */
+    .explanation-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 8px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .btn-explanation {
+        background: var(--glass-bg);
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 6px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    [data-theme="dark"] .btn-explanation {
+        border-color: var(--secondary-color);
+        color: var(--secondary-color);
+        background: rgba(255,255,255,0.05);
+    }
+
+    .explanation-content {
+        background: var(--expl-bg);
+        border-left: 4px solid var(--expl-border);
+        color: var(--expl-text);
+        border-radius: 8px;
+        padding: 15px;
+        width: 100%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        position: relative;
+    }
+    
+    .explanation-content::before {
+        content: '💡';
+        margin-right: 8px;
+    }
+
+    /* "Show Correct Choice" Button Styles */
+    .btn-show-correct {
+        background: transparent;
+        border: 1px solid var(--incorrect-border);
+        color: var(--incorrect-border);
+        padding: 6px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-left: 10px;
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+
+    .btn-show-correct:hover {
+        background: var(--incorrect-bg);
+        transform: translateY(-1px);
+    }
+
+    [data-theme="dark"] .btn-show-correct {
+        border-color: #f56565;
+        color: #f56565;
+    }
+    [data-theme="dark"] .btn-show-correct:hover {
+        background: rgba(245, 101, 101, 0.15);
+    }
+
+    /* Smart Dictionary Tooltip */
+    .word-tooltip {
+        position: relative;
+        cursor: help;
+        border-bottom: 2px dotted var(--primary-color);
+        transition: all 0.2s;
+    }
+
+    .word-tooltip:hover {
+        background-color: rgba(255, 235, 59, 0.3);
+        color: var(--primary-color);
+    }
+
+    .word-tooltip:hover::after {
+        content: attr(data-meaning);
+        position: absolute;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        z-index: 100;
+        opacity: 0;
+        animation: tooltipPop 0.3s forwards;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .word-tooltip:hover::before {
+        content: '';
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 6px solid transparent;
+        border-top-color: #333;
+        opacity: 0;
+        animation: tooltipPop 0.3s forwards;
+    }
+
+    @keyframes tooltipPop {
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(5px);
+        }
+    }
+
+    /* Question Styles */
+    .question {
+        margin-bottom: 2.5rem;
+        padding: 1.8rem;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: visible;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .question:hover {
+        transform: translateX(5px);
+        border-color: var(--primary-color);
+        box-shadow: 6px 6px 20px rgba(42, 103, 111, 0.1);
+    }
+
+    .question h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        position: relative;
+        padding-left: 10px;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .options label {
+        display: flex;
+        align-items: center;
+        padding: 1.1rem;
+        margin: 0.8rem 0;
+        background: var(--option-bg);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        gap: 12px;
+        border: 2px solid transparent;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .options label:hover {
+        background: var(--option-hover-bg);
+        transform: translateX(5px);
+        box-shadow: 4px 4px 12px rgba(42, 103, 111, 0.1);
+        border-color: var(--primary-color);
+    }
+
+    .options input[type="radio"] {
+        margin-left: 1rem;
+        transform: scale(1.3);
+        accent-color: var(--primary-color);
+        cursor: pointer;
+    }
+
+    .answer-box {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        padding: 1.2rem;
+        border-radius: 12px;
+        display: none;
+        animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        position: relative;
+        z-index: 2;
+        border-left: 5px solid;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .correct {
+        background: var(--correct-bg);
+        border-color: var(--correct-border);
+        color: var(--text-color);
+    }
+
+    .correct::before {
+        margin-right: 10px;
+    }
+
+    .incorrect {
+        background: var(--incorrect-bg);
+        border-color: var(--incorrect-border);
+        color: var(--text-color);
+    }
+
+    .incorrect::before {
+        margin-right: 10px;
+    }
+
+    /* Slides Section */
+    .slides-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 3px dashed var(--primary-color);
+    }
+
+    .slides-header {
+        background: var(--quiz-header-bg);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 2.5rem 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(42, 103, 111, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slides-header::after {
+        content: '📚';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.15;
+        font-size: 2.5rem;
+    }
+
+    /* Slides View Controls */
+    .slides-controls {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .view-btn {
+        padding: 0.9rem 1.8rem;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        color: var(--text-color);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(5px);
+    }
+
+    .view-btn:hover {
+        background: var(--button-primary-bg);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .view-btn.active {
+        background: var(--button-primary-bg);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 12px rgba(42, 103, 111, 0.3);
+    }
+
+    /* List View */
+    .slides-list {
+        display: none;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .slide-list-item {
+        background: var(--slide-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 2px solid var(--slide-border);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide-list-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .slide-list-number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--slide-header);
+        color: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .slide-list-title {
+        color: var(--slide-header);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        line-height: 1.4;
+        padding-right: 60px;
+    }
+
+    .slide-list-content {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .slide-list-content ul, .slide-list-content ol {
+        padding-left: 1.8rem;
+        margin: 0.8rem 0;
+    }
+
+    .slide-list-content li {
+        margin-bottom: 0.6rem;
+    }
+
+    .slide-highlight {
+        background-color: var(--highlight-bg);
+        color: var(--highlight-text);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid var(--highlight-border);
+        font-weight: 500;
+    }
+
+    .slide-code {
+        background: var(--grammar-bg);
+        border: 1px solid var(--grammar-border);
+        border-radius: 8px;
+        padding: 1rem;
+        font-family: 'Courier New', monospace;
+        margin: 1rem 0;
+        overflow-x: auto;
+    }
+
+    /* Carousel Styles */
+    .slides-carousel {
+        display: flex;
+        flex-direction: column;
+        background: var(--slide-bg);
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        overflow: hidden;
+        min-height: 400px;
+        margin-bottom: 3rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .carousel-top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: var(--quiz-header-bg);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+
+    .carousel-nav-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(5px);
+    }
+
+    .carousel-nav-btn:hover {
+        background: #ffffff;
+        color: var(--primary-color);
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .carousel-indicators {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .carousel-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-indicator:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        transform: scale(1.2);
+    }
+
+    .carousel-indicator.active {
+        background-color: #ffffff;
+        border-color: #ffffff;
+        transform: scale(1.35);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .slides-content-wrapper {
+        flex-grow: 1;
+        background: var(--slide-bg);
+    }
+
+    .carousel-slide {
+        display: none;
+        flex-direction: column;
+        padding: 2.5rem;
+        animation: fadeIn 0.4s ease;
+    }
+
+    .carousel-slide.active {
+        display: flex;
+    }
+
+    .carousel-slide {
+        width: 100%;
+        height: auto;
+        background: transparent;
+        padding: 2rem;
+        padding-bottom: 80px;
+        display: none;
+        flex-direction: column;
+        animation: slideIn 0.4s ease;
+    }
+
+    .carousel-slide.active {
+        display: flex;
+    }
+
+    .carousel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--slide-header);
+        flex-shrink: 0;
+    }
+
+    .carousel-slide-number {
+        background: var(--slide-header);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.3rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        flex-shrink: 0;
+    }
+
+    .carousel-slide-title {
+        color: var(--slide-header);
+        font-size: 1.6rem;
+        font-weight: 700;
+        flex-grow: 1;
+        text-align: center;
+        margin: 0 1.5rem;
+        line-height: 1.3;
+    }
+
+    .carousel-slide-content {
+        flex-grow: 1;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        padding: 0.5rem;
+        overflow-y: visible;
+        max-height: none;
+    }
+
+    .carousel-slide-content ul, .carousel-slide-content ol {
+        padding-left: 2rem;
+        margin: 1rem 0;
+    }
+
+    .carousel-slide-content li {
+        margin-bottom: 0.6rem;
+    }
+
+    /* Doctor's Note */
+    .doctor-note {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 165, 0, 0.08));
+        border: 2px solid rgba(255, 165, 0, 0.2);
+        border-radius: 15px;
+        padding: 1.8rem;
+        margin: 3rem 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(255, 165, 0, 0.1);
+    }
+
+    .doctor-note::before {
+        content: '📌';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        opacity: 0.2;
+    }
+
+    .doctor-note-title {
+        color: #d97706;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .doctor-note-content {
+        color: #92400e;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        font-weight: 600;
+        white-space: pre-wrap;
+    }
+
+    .doctor-note-content ol {
+        padding-left: 1.8rem;
+        margin: 1rem 0;
+    }
+
+    .doctor-note-content li {
+        margin-bottom: 0.6rem;
+        position: relative;
+    }
+
+    /* Quiz Progress */
+    .quiz-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: var(--glass-bg);
+        border-radius: 10px;
+        border: 1px solid var(--glass-border);
+    }
+
+    .progress-bar {
+        flex-grow: 1;
+        height: 10px;
+        background: var(--border-color);
+        border-radius: 5px;
+        margin: 0 1rem;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 5px;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        font-weight: 600;
+        color: var(--primary-color);
+        white-space: nowrap;
+    }
+
+    /* Footer */
+    .footer-note {
+        text-align: center;
+        margin: 3rem 0 1rem;
+        padding: 1.5rem;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        border-top: 2px solid rgba(42, 103, 111, 0.2);
+        opacity: 0.9;
+        font-weight: 600;
+        background: var(--glass-bg);
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+    }
+
+    [data-theme="dark"] .footer-note {
+        color: var(--secondary-color);
+        border-color: rgba(169, 138, 80, 0.3);
+    }
+
+    [data-theme="dark"] .doctor-note {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(217, 119, 6, 0.08));
+        border-color: rgba(245, 158, 11, 0.2);
+    }
+
+    [data-theme="dark"] .doctor-note-title {
+        color: #fbbf24;
+    }
+
+    [data-theme="dark"] .doctor-note-content {
+        color: #fef3c7;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Hidden Class */
+    .hidden {
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .quiz-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .quiz-header, .slides-header {
+            font-size: 1.7rem;
+            padding: 1.2rem;
+        }
+        
+        .carousel-slide-title {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .question::before {
+            display: none;
+        }
+        
+        .controls {
+            flex-direction: row; /* Keep row for grid layout */
+            flex-wrap: wrap;     /* Allow wrapping */
+            gap: 10px;           /* Smaller gap */
+            padding: 1rem;
+        }
+        
+        .btn {
+            width: auto;
+            flex: 1 1 calc(50% - 10px); /* Grow to fill space, basis 50% minus gap */
+            margin: 0;
+            min-width: 120px; /* Ensure buttons don't get too small */
+            padding: 0.8rem;  /* Reduce padding for mobile */
+            font-size: 0.9rem;
+        }
+        
+        .slides-controls {
+            flex-direction: column;
+        }
+        
+        .view-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .carousel-slide {
+            padding: 1.5rem;
+        }
+        
+        .carousel-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .carousel-slide-title {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        
+        .carousel-nav-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 1.3rem;
+        }
+        
+        .carousel-slide-content {
+            font-size: 1rem;
+            padding: 0.3rem;
+        }
+        
+        .slide-list-item {
+            padding: 1.5rem;
+        }
+        
+        .slide-list-title {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .quiz-header, .slides-header {
+            font-size: 1.4rem;
+            padding: 1rem;
+        }
+        
+        .carousel-slide {
+            padding: 1rem;
+        }
+        
+        .carousel-slide-title {
+            font-size: 1.1rem;
+        }
+        
+        .carousel-slide-number {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .carousel-bottom-nav {
+            padding: 0.8rem;
+        }
+        
+        .carousel-nav-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            Programming Languages Quiz 2
+        </div>
+        
+        <div class="quiz-subtitle">
+            <strong>Topic:</strong> Names, Bindings & Scopes (Lecture 4) | <strong>Week 16</strong> | <strong>Worth:</strong> 10% of total mark
+        </div>
+        
+        <div class="quiz-progress">
+            <div class="progress-text">Quiz Progress:</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="quiz-progress" style="width: 0%"></div>
+            </div>
+            <div class="progress-text"><span id="answered-count">0</span>/11 Answered</div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="resetQuiz()">
+                <span class="btn-icon">🔄</span> Reset Quiz
+            </button>
+            <button class="btn" onclick="showAllAnswers()">
+                <span class="btn-icon">👁️</span> Show All Answers
+            </button>
+            <button class="btn" onclick="hideAllAnswers()">
+                <span class="btn-icon">🙈</span> Hide All Answers
+            </button>
+            <!-- Check My Answers button removed -->
+            <button class="btn btn-secondary" id="themeToggle" onclick="toggleTheme()">
+                <span class="btn-icon">🌙</span> Dark Mode
+            </button>
+            <button class="btn btn-secondary" id="slidesToggle" onclick="toggleSlides()">
+                <span class="btn-icon">📚</span> السلايدات المحدده
+            </button>
+        </div>
+
+        <!-- Questions Section -->
+        <div id="questions-section">
+            <!-- Question 1 -->
+            <div class="question">
+                <h3>1. In programming, names can be associated with which of the following?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> a) Subprograms</label>
+                    <label><input type="radio" name="q1" value="b"> b) Formal parameters</label>
+                    <label><input type="radio" name="q1" value="c"> c) Variables</label>
+                    <label><input type="radio" name="q1" value="d"> d) All of the above</label>
+                </div>
+                <!-- Hint removed -->
+                <div class="answer-box" id="answer1" data-correct-answer="d" data-explanation="Names are associated with subprograms, formal parameters, variables, and other program constructs (Slide 6).">
+                    Correct Answer: d) All of the above<br><br><em>Explanation: Names are associated with subprograms, formal parameters, variables, and other program constructs (Slide 6).</em>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question">
+                <h3>2. The term "identifier" is often used interchangeably with "variables."</h3>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> a) True</label>
+                    <label><input type="radio" name="q2" value="b"> b) False</label>
+                </div>
+                <div class="answer-box" id="answer2" data-correct-answer="b" data-explanation="The term identifier is often used interchangeably with &quot;name&quot;, not specifically with &quot;variables&quot; (Slide 6).">
+                    Correct Answer: b) False<br><br><em>Explanation: The term identifier is often used interchangeably with "name", not specifically with "variables" (Slide 6).</em>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question">
+                <h3>3. In PHP, all variable names must begin with:</h3>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> a) #</label>
+                    <label><input type="radio" name="q3" value="b"> b) $</label>
+                    <label><input type="radio" name="q3" value="c"> c) %</label>
+                    <label><input type="radio" name="q3" value="d"> d) &</label>
+                </div>
+                <div class="answer-box" id="answer3" data-correct-answer="b" data-explanation="PHP requires all variable names to begin with dollar signs ($) (Slide 8).">
+                    Correct Answer: b) $<br><br><em>Explanation: PHP requires all variable names to begin with dollar signs ($) (Slide 8).</em>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question">
+                <h3>4. Which of the following best describes a variable in programming?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> a) An abstraction of a function or a collection of functions</label>
+                    <label><input type="radio" name="q4" value="b"> b) An abstraction of a data type or a collection of types</label>
+                    <label><input type="radio" name="q4" value="c"> c) An abstraction of a memory cell or a collection of cells</label>
+                    <label><input type="radio" name="q4" value="d"> d) An abstraction of a keyword or a collection of keywords</label>
+                </div>
+                <div class="answer-box" id="answer4" data-correct-answer="c" data-explanation="A variable is an abstraction of a memory cell or collection of cells (Slide 11).">
+                    Correct Answer: c) An abstraction of a memory cell or a collection of cells<br><br><em>Explanation: A variable is an abstraction of a memory cell or collection of cells (Slide 11).</em>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question">
+                <h3>5. In programming, the I-value of a variable refers to:</h3>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> a) The actual value stored in the variable</label>
+                    <label><input type="radio" name="q5" value="b"> b) The memory address where the variable is stored</label>
+                    <label><input type="radio" name="q5" value="c"> c) The result of an expression using the variable</label>
+                    <label><input type="radio" name="q5" value="d"> d) The symbolic name used to refer to the variable</label>
+                </div>
+                <div class="answer-box" id="answer5" data-correct-answer="b" data-explanation="The I-value (location value) of a variable is its memory address (Slide 12).">
+                    Correct Answer: b) The memory address where the variable is stored<br><br><em>Explanation: The I-value (location value) of a variable is its memory address (Slide 12).</em>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question">
+                <h3>6. In programming, the r-value of a variable refers to:</h3>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="a"> a) The memory address where the variable is stored</label>
+                    <label><input type="radio" name="q6" value="b"> b) The actual value stored in the variable</label>
+                    <label><input type="radio" name="q6" value="c"> c) The result of an expression using the variable</label>
+                    <label><input type="radio" name="q6" value="d"> d) The symbolic name used to refer to the variable</label>
+                </div>
+                <div class="answer-box" id="answer6" data-correct-answer="b" data-explanation="The r-value (read value) is the actual value stored in the variable (Slide 13).">
+                    Correct Answer: b) The actual value stored in the variable<br><br><em>Explanation: The r-value (read value) is the actual value stored in the variable (Slide 13).</em>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question">
+                <h3>7. Which attribute of a variable determines the range of values and the set of operations that can be performed on it?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="a"> a) Value</label>
+                    <label><input type="radio" name="q7" value="b"> b) Address</label>
+                    <label><input type="radio" name="q7" value="c"> c) Type</label>
+                    <label><input type="radio" name="q7" value="d"> d) Identifier</label>
+                </div>
+                <div class="answer-box" id="answer7" data-correct-answer="c" data-explanation="The type determines the range of values and operations for a variable (Slide 13).">
+                    Correct Answer: c) Type<br><br><em>Explanation: The type determines the range of values and operations for a variable (Slide 13).</em>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question">
+                <h3>8. Which of the following is an example of variable binding time at design time?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="a"> a) int factor;</label>
+                    <label><input type="radio" name="q8" value="b"> b) area = length * width;</label>
+                    <label><input type="radio" name="q8" value="c"> c) float area = 20.2;</label>
+                    <label><input type="radio" name="q8" value="d"> d) static int counter;</label>
+                </div>
+                <div class="answer-box" id="answer8" data-correct-answer="b" data-explanation="At language design time, operator symbols like * are bound to operations (Slide 15).">
+                    Correct Answer: b) area = length * width;<br><br><em>Explanation: At language design time, operator symbols like * are bound to operations (Slide 15).</em>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question">
+                <h3>9. Which of the following is an example of variable binding time at implementation time?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="a"> a) int factor;</label>
+                    <label><input type="radio" name="q9" value="b"> b) float area = 20.2;</label>
+                    <label><input type="radio" name="q9" value="c"> c) static int counter;</label>
+                    <label><input type="radio" name="q9" value="d"> d) void compute() { ... }</label>
+                </div>
+                <div class="answer-box" id="answer9" data-correct-answer="b" data-explanation="At implementation time, floating point type is bound to a representation (Slide 15).">
+                    Correct Answer: b) float area = 20.2;<br><br><em>Explanation: At implementation time, floating point type is bound to a representation (Slide 15).</em>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question">
+                <h3>10. Which of the following is an example of variable binding time at compile time?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="a"> a) int factor;</label>
+                    <label><input type="radio" name="q10" value="b"> b) static int counter;</label>
+                    <label><input type="radio" name="q10" value="c"> c) int localVar;</label>
+                    <label><input type="radio" name="q10" value="d"> d) #include &lt;stdio.h&gt;</label>
+                </div>
+                <div class="answer-box" id="answer10" data-correct-answer="a" data-explanation="At compile time, variables are bound to types in languages like C or Java (Slide 15).">
+                    Correct Answer: a) int factor;<br><br><em>Explanation: At compile time, variables are bound to types in languages like C or Java (Slide 15).</em>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question">
+                <h3>11. Which of the following is an example of variable binding time at link time?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="a"> a) static int counter;</label>
+                    <label><input type="radio" name="q11" value="b"> b) int localVar;</label>
+                    <label><input type="radio" name="q11" value="c"> c) int factor;</label>
+                    <label><input type="radio" name="q11" value="d"> d) int m = java.lang.Math.max(20, 22);</label>
+                </div>
+                <div class="answer-box" id="answer11" data-correct-answer="d" data-explanation="At link time, library subprogram calls are bound to the subprogram code (Slide 16).">
+                    Correct Answer: d) int m = java.lang.Math.max(20, 22);<br><br><em>Explanation: At link time, library subprogram calls are bound to the subprogram code (Slide 16).</em>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slides Section -->
+        <div class="slides-section hidden" id="slides-section">
+            <div class="slides-header">
+                السلايدات المحدده (Lecture 4)
+            </div>
+            
+            <div class="slides-controls">
+                <button class="view-btn" onclick="changeView('list')">
+                    <span>📄</span> List
+                </button>
+                <button class="view-btn active" onclick="changeView('carousel')">
+                    <span>🎬</span> Slides
+                </button>
+            </div>
+
+            <!-- List View -->
+            <div class="slides-list" id="list-view">
+                <!-- Slide 6 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">6</div>
+                    <div class="slide-list-title">Names</div>
+                    <div class="slide-list-content">
+                        <p>Names are one of the <span class="word-tooltip" data-meaning="أساسي">fundamental</span> attributes of variables.</p>
+                        <ul>
+                            <li><span class="slide-highlight">Names are also <span class="word-tooltip" data-meaning="مرتبط">associated</span> with subprograms, formal parameters, and other program <span class="word-tooltip" data-meaning="تراكيب / بناءات">constructs</span>.</span></li>
+                            <li><span class="slide-highlight">The term identifier is often used <span class="word-tooltip" data-meaning="بالتبادل">interchangeably</span> with name.</span></li>
+                        </ul>
+                        <p>Design issues for names:</p>
+                        <ul>
+                            <li>Are names case sensitive?</li>
+                            <li>Are special words of the language reserved words or keywords?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 8 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">8</div>
+                    <div class="slide-list-title">Names Forms (continued)</div>
+                    <div class="slide-list-content">
+                        <p>Special Characters:</p>
+                        <ul>
+                            <li><strong>PHP:</strong> <span class="slide-highlight">all variable names must begin with dollar signs ($).</span></li>
+                            <li>Perl: all variable names begin with special characters ($, @ or %), which specify the variable's type.</li>
+                            <li>Ruby: variable names that begin with @ are instance variables; those that begin with @@ are class variables.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 11 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">11</div>
+                    <div class="slide-list-title">Variables</div>
+                    <div class="slide-list-content">
+                        <p><span class="slide-highlight">A variable is an <span class="word-tooltip" data-meaning="تجريد (فكرة عامة)">abstraction</span> of a memory cell or a collection of cells.</span></p>
+                        <p>Variables can be characterized as a sextuple of <span class="word-tooltip" data-meaning="خصائص / سمات">attributes</span>:</p>
+                        <ol>
+                            <li>Name</li>
+                            <li>Address</li>
+                            <li>Value</li>
+                            <li>Type</li>
+                            <li>Lifetime</li>
+                            <li>Scope</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Slide 12 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">12</div>
+                    <div class="slide-list-title">Variables Attributes</div>
+                    <div class="slide-list-content">
+                        <ul>
+                            <li><strong>Name:</strong> the most common names in programs and not all variables have them.</li>
+                            <li><strong>Address:</strong> <span class="slide-highlight">the memory address (I-value) with which it is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.</span>
+                                <ul>
+                                    <li>A variable may have different addresses at different times during execution (like in a subprogram calls).</li>
+                                    <li>A variable may have different addresses at different places in a program (like in dynamic-allocation).</li>
+                                    <li>If two variable names can be used to access the same memory location, they are called aliases.</li>
+                                    <li>Aliases are created via pointers, reference variables, C and C++ unions types.</li>
+                                    <li>Aliases are harmful to readability (program readers must remember all of them).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 13 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">13</div>
+                    <div class="slide-list-title">Variables Attributes (continued)</div>
+                    <div class="slide-list-content">
+                        <ul>
+                            <li><strong>Type:</strong> <span class="slide-highlight">determines the range of values of variables and the set of operations that are defined for values of that type.</span>
+                                <ul>
+                                    <li>In the case of floating point, type also determines the precision.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Value:</strong> the contents of the location with which the variable is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.
+                                <ul>
+                                    <li>The I-value of a variable is its address.</li>
+                                    <li>The r-value of a variable is its value (needs I-value to be accessed first).</li>
+                                    <li>Abstract memory cell: the physical cell or collection of cells <span class="word-tooltip" data-meaning="مرتبط">associated</span> with a variable.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 15 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">15</div>
+                    <div class="slide-list-title">Possible Binding Times</div>
+                    <div class="slide-list-content">
+                        <p><strong>Language Design Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> operator symbols to operations.</span>
+                                <ul><li>E.g., the asterisk symbol (*) is usually bound to the multiplication operation...etc.</li></ul>
+                                <div class="slide-code">area = length * width;</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong>Language <span class="word-tooltip" data-meaning="تنفيذ">Implementation</span> Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> floating point data type to a representation (a range of possible values).</span>
+                                <div class="slide-code">float area = 20.2;</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong><span class="word-tooltip" data-meaning="وقت الترجمة">Compile Time</span>:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a variable to a type in C or Java.</span>
+                                <div class="slide-code">int factor;</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 16 -->
+                <div class="slide-list-item">
+                    <div class="slide-list-number">16</div>
+                    <div class="slide-list-title">Possible Binding Times (continued)</div>
+                    <div class="slide-list-content">
+                         <p><strong>Load Time:</strong></p>
+                        <ul>
+                            <li>Example: bind a C or C++ <span class="word-tooltip" data-meaning="ثابت">static</span> variable to a memory cell.</li>
+                            <li>E.g., binding the previous "area" variable to the memory cell (a storage) "0x00000000"</li>
+                        </ul>
+
+                        <p><strong>Link Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: a call to a library subprogram is bound to the subprogram code at link time.</span>
+                                <div class="slide-code">int m = java.lang.Math.max(20, 22);</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong><span class="word-tooltip" data-meaning="وقت التشغيل">Run Time</span>:</strong></p>
+                        <ul>
+                            <li>Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a non-static local variable to a memory cell.</li>
+                            <li>E.g., variables declared in Java methods.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel View -->
+            <div class="slides-carousel" id="carousel-view">
+                <div class="carousel-top-nav">
+                    <button class="carousel-nav-btn" onclick="prevSlide()" title="Previous">❮</button>
+                    
+                    <div class="carousel-indicators" id="carousel-indicators">
+                        <!-- Indicators will be generated by JavaScript -->
+                    </div>
+
+                    <button class="carousel-nav-btn" onclick="nextSlide()" title="Next">❯</button>
+                </div>
+
+                <div id="slides-container" class="slides-content-wrapper">
+                    <!-- Slides will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Doctor's Note (Custom) -->
+            <div class="doctor-note">
+                <div class="doctor-note-title">Doctor's Note:</div>
+                <div class="doctor-note-content"><p>Dears,</p>
+
+<p>We are having our Quiz 2 next week (Week 16). The quiz is worth 10% of the total mark and covers some slides from lecture 4 (Names, Bindings & Scopes). To do well in this quiz, we must understand the following:</p>
+
+<ol>
+<li>Names are also associated with subprogrammes, formal parameters, and other program constructs. (Slide 6)</li>
+<li>The term identifier is often used interchangeably with name. (Slide 6)</li>
+<li>In PHP, all variable names must begin with dollar signs ($). (Slide 8)</li>
+<li>A variable is an abstraction of a memory cell or a collection of cells. (Slide 11)</li>
+<li>Variable address is the memory address (l-value) with which it is associated. (Slide 12)</li>
+<li>Variable type determines the range of values of variables and the set of operations that are defined for values of that type. (Slide 13)</li>
+<li>Give an example of variable binding time at design time. (Slide 15)</li>
+<li>Give an example of variable binding time at implementation time. (Slide 15)</li>
+<li>Give an example of variable binding time at compile time. (Slide 15)</li>
+<li>Give an example of variable binding time at link time. (Slide 16)</li>
+</ol>
+
+<p>That's it!</p>
+
+<p>With this information, you should be able to score a higher mark on the quiz.
+You are welcome to ask me if you require further clarification.</p>
+
+<p>All the best,
+Dr Abdullah</p></div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn" onclick="toggleSlides()">
+                    <span class="btn-icon">←</span> العودة للأسئلة
+                </button>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            دعواتكم للمساعد الخفي والعاملين على الموقع بالتوفيق والسداد والزوجة الصالحة
+        </div>
+    </div>
+
+    <script>
+        // Quiz functionality
+        function resetQuiz() {
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.checked = false);
+
+            const answerBoxes = document.querySelectorAll('.answer-box');
+            answerBoxes.forEach(box => {
+                box.style.display = 'none';
+                box.classList.remove('correct', 'incorrect');
+                const correctAnswer = box.getAttribute('data-correct-answer');
+                const explanation = box.getAttribute('data-explanation');
+                
+                // Reset content using the stored data-explanation
+            });
+
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(q => {
+                q.classList.remove('answered-correct', 'answered-incorrect');
+            });
+            
+            updateProgress();
+        }
+
+        function showAllAnswers() {
+            const answerBoxes = document.querySelectorAll('.answer-box');
+            answerBoxes.forEach(box => {
+                const correctAnswer = box.dataset.correctAnswer;
+                // Retrieve explanation securely from data attribute
+                const explanation = box.dataset.explanation || '';
+                
+                // When showing all, we can show the explanation directly or keep it hidden. 
+                // Showing it directly is usually expected for "Show All Answers".
+                box.innerHTML = `Correct Answer: ${correctAnswer}<br><div class="explanation-container"><div class="explanation-content" style="display:block;">${explanation}</div></div>`;
+                box.style.display = 'block';
+                box.classList.add('correct');
+            });
+        }
+
+        function hideAllAnswers() {
+            const answerBoxes = document.querySelectorAll('.answer-box');
+            answerBoxes.forEach(box => {
+                box.style.display = 'none';
+                box.classList.remove('correct', 'incorrect');
+            });
+        }
+
+        function updateProgress() {
+            const radioButtons = document.querySelectorAll('input[type="radio"]:checked');
+            const answeredCount = radioButtons.length;
+            const progressPercent = Math.round((answeredCount / 11) * 100);
+            
+            document.getElementById('answered-count').textContent = answeredCount;
+            document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if(body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<span class="btn-icon">🌙</span> Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<span class="btn-icon">☀️</span> Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Slides toggle
+        let slidesVisible = false;
+        function toggleSlides() {
+            const slidesSection = document.getElementById('slides-section');
+            const slidesToggle = document.getElementById('slidesToggle');
+            const questionsSection = document.getElementById('questions-section');
+            
+            if(!slidesVisible) {
+                slidesSection.classList.remove('hidden');
+                questionsSection.style.display = 'none';
+                slidesToggle.innerHTML = '<span class="btn-icon">📝</span> Questions';
+                slidesVisible = true;
+                if(document.querySelector('.view-btn.active').textContent.includes('Slides')) {
+                    changeView('carousel');
+                }
+                slidesSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                slidesSection.classList.add('hidden');
+                questionsSection.style.display = 'block';
+                slidesToggle.innerHTML = '<span class="btn-icon">📚</span> السلايدات المحدده';
+                slidesVisible = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Slides view management
+        function changeView(viewType) {
+            const listView = document.getElementById('list-view');
+            const carouselView = document.getElementById('carousel-view');
+            const viewButtons = document.querySelectorAll('.view-btn');
+            
+            viewButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(viewType === 'list' ? 'List' : 'Slides')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if(viewType === 'list') {
+                listView.style.display = 'flex';
+                carouselView.style.display = 'none';
+            } else {
+                listView.style.display = 'none';
+                carouselView.style.display = 'block';
+                initializeCarousel();
+            }
+        }
+
+        // Carousel functionality
+        let currentSlide = 0;
+        // Updated content to match List View with highlighting and tooltips
+        const slides = [
+            {
+                id: 6,
+                title: "Names",
+                content: `<p>Names are one of the <span class="word-tooltip" data-meaning="أساسي">fundamental</span> attributes of variables.</p>
+                        <ul>
+                            <li><span class="slide-highlight">Names are also <span class="word-tooltip" data-meaning="مرتبط">associated</span> with subprograms, formal parameters, and other program <span class="word-tooltip" data-meaning="تراكيب / بناءات">constructs</span>.</span></li>
+                            <li><span class="slide-highlight">The term identifier is often used <span class="word-tooltip" data-meaning="بالتبادل">interchangeably</span> with name.</span></li>
+                        </ul>
+                        <p>Design issues for names:</p>
+                        <ul>
+                            <li>Are names case sensitive?</li>
+                            <li>Are special words of the language reserved words or keywords?</li>
+                        </ul>`
+            },
+            {
+                id: 8,
+                title: "Names Forms (continued)",
+                content: `<p>Special Characters:</p>
+                        <ul>
+                            <li><strong>PHP:</strong> <span class="slide-highlight">all variable names must begin with dollar signs ($).</span></li>
+                            <li>Perl: all variable names begin with special characters ($, @ or %), which specify the variable's type.</li>
+                            <li>Ruby: variable names that begin with @ are instance variables; those that begin with @@ are class variables.</li>
+                        </ul>`
+            },
+            {
+                id: 11,
+                title: "Variables",
+                content: `<p><span class="slide-highlight">A variable is an <span class="word-tooltip" data-meaning="تجريد (فكرة عامة)">abstraction</span> of a memory cell or a collection of cells.</span></p>
+                        <p>Variables can be characterized as a sextuple of <span class="word-tooltip" data-meaning="خصائص / سمات">attributes</span>:</p>
+                        <ol>
+                            <li>Name</li>
+                            <li>Address</li>
+                            <li>Value</li>
+                            <li>Type</li>
+                            <li>Lifetime</li>
+                            <li>Scope</li>
+                        </ol>`
+            },
+            {
+                id: 12,
+                title: "Variables Attributes",
+                content: `<ul>
+                            <li><strong>Name:</strong> the most common names in programs and not all variables have them.</li>
+                            <li><strong>Address:</strong> <span class="slide-highlight">the memory address (I-value) with which it is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.</span>
+                                <ul>
+                                    <li>A variable may have different addresses at different times during execution (like in a subprogram calls).</li>
+                                    <li>A variable may have different addresses at different places in a program (like in dynamic-allocation).</li>
+                                    <li>If two variable names can be used to access the same memory location, they are called aliases.</li>
+                                    <li>Aliases are created via pointers, reference variables, C and C++ unions types.</li>
+                                    <li>Aliases are harmful to readability (program readers must remember all of them).</li>
+                                </ul>
+                            </li>
+                        </ul>`
+            },
+            {
+                id: 13,
+                title: "Variables Attributes (continued)",
+                content: `<ul>
+                            <li><strong>Type:</strong> <span class="slide-highlight">determines the range of values of variables and the set of operations that are defined for values of that type.</span>
+                                <ul>
+                                    <li>In the case of floating point, type also determines the precision.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Value:</strong> the contents of the location with which the variable is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.
+                                <ul>
+                                    <li>The I-value of a variable is its address.</li>
+                                    <li>The r-value of a variable is its value (needs I-value to be accessed first).</li>
+                                    <li>Abstract memory cell: the physical cell or collection of cells <span class="word-tooltip" data-meaning="مرتبط">associated</span> with a variable.</li>
+                                </ul>
+                            </li>
+                        </ul>`
+            },
+            {
+                id: 15,
+                title: "Possible Binding Times",
+                content: `<p><strong>Language Design Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> operator symbols to operations.</span>
+                                <ul><li>E.g., the asterisk symbol (*) is usually bound to the multiplication operation...etc.</li></ul>
+                                <div class="slide-code">area = length * width;</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong>Language <span class="word-tooltip" data-meaning="تنفيذ">Implementation</span> Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> floating point data type to a representation (a range of possible values).</span>
+                                <div class="slide-code">float area = 20.2;</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong><span class="word-tooltip" data-meaning="وقت الترجمة">Compile Time</span>:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a variable to a type in C or Java.</span>
+                                <div class="slide-code">int factor;</div>
+                            </li>
+                        </ul>`
+            },
+            {
+                id: 16,
+                title: "Possible Binding Times (continued)",
+                content: `<p><strong>Load Time:</strong></p>
+                        <ul>
+                            <li>Example: bind a C or C++ <span class="word-tooltip" data-meaning="ثابت">static</span> variable to a memory cell.</li>
+                            <li>E.g., binding the previous "area" variable to the memory cell (a storage) "0x00000000"</li>
+                        </ul>
+
+                        <p><strong>Link Time:</strong></p>
+                        <ul>
+                            <li><span class="slide-highlight">Example: a call to a library subprogram is bound to the subprogram code at link time.</span>
+                                <div class="slide-code">int m = java.lang.Math.max(20, 22);</div>
+                            </li>
+                        </ul>
+                        
+                        <p><strong><span class="word-tooltip" data-meaning="وقت التشغيل">Run Time</span>:</strong></p>
+                        <ul>
+                            <li>Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a non-static local variable to a memory cell.</li>
+                            <li>E.g., variables declared in Java methods.</li>
+                        </ul>`
+            }
+        ];
+
+        function createCarouselSlides() {
+            const slidesContainer = document.getElementById('slides-container');
+            slidesContainer.innerHTML = '';
+            
+            slides.forEach((slide, index) => {
+                const slideElement = document.createElement('div');
+                slideElement.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+                slideElement.id = `slide-${slide.id}`;
+                
+                slideElement.innerHTML = `
+                    <div class="carousel-header">
+                        <div class="carousel-slide-number">${slide.id}</div>
+                        <div class="carousel-slide-title">${slide.title}</div>
+                    </div>
+                    <div class="carousel-slide-content">
+                        ${slide.content}
+                    </div>
+                `;
+                
+                slidesContainer.appendChild(slideElement);
+            });
+        }
+
+        function initializeCarousel() {
+            createCarouselSlides();
+            
+            const indicatorsContainer = document.getElementById('carousel-indicators');
+            indicatorsContainer.innerHTML = '';
+            
+            slides.forEach((slide, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
+                indicator.onclick = () => goToSlide(index);
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            showSlide(0);
+        }
+
+        function showSlide(index) {
+            document.querySelectorAll('.carousel-slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            document.getElementById(`slide-${slides[index].id}`).classList.add('active');
+            
+            document.querySelectorAll('.carousel-indicator').forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next >= slides.length) next = 0;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            let prev = currentSlide - 1;
+            if (prev < 0) prev = slides.length - 1;
+            showSlide(prev);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        // Event listeners for radio buttons
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const questionNumber = e.target.name.substring(1);
+                const answerBox = document.getElementById(`answer${questionNumber}`);
+                const questionContainer = e.target.closest('.question');
+                
+                const correctAnswer = answerBox.getAttribute('data-correct-answer');
+                const userAnswer = e.target.value;
+                // Retrieve explanation securely from data attribute
+                const explanation = answerBox.getAttribute('data-explanation');
+
+                questionContainer.classList.remove('answered-correct', 'answered-incorrect');
+                
+                let resultHtml = '';
+
+                if (userAnswer === correctAnswer) {
+                    resultHtml = `✅ Correct!`;
+                    answerBox.classList.add('correct');
+                    answerBox.classList.remove('incorrect');
+                    questionContainer.classList.add('answered-correct');
+                    
+                    // Add the toggle button and hidden explanation with GOLD layout
+                    answerBox.innerHTML = `
+                        ${resultHtml}
+                        <div class="explanation-container">
+                            <button class="btn-explanation" onclick="this.parentElement.querySelector('.explanation-content').style.display='block'; this.style.display='none';">
+                                <span style="font-size:1.1em">💡</span> Show Explanation
+                            </button>
+                            <div class="explanation-content" style="display:none;">
+                                ${explanation}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultHtml = `❌ Incorrect.`;
+                    answerBox.classList.add('incorrect');
+                    answerBox.classList.remove('correct');
+                    questionContainer.classList.add('answered-incorrect');
+                    
+                    // Add the Show Correct Choice button
+                    answerBox.innerHTML = `
+                        ${resultHtml}
+                        <button class="btn-show-correct" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
+                            Show Correct Choice
+                        </button>
+                        <div class="reveal-content" style="display:none; margin-top:10px;">
+                            <div style="margin-bottom:10px; font-weight:bold;">Correct Answer: ${correctAnswer}</div>
+                            <div class="explanation-content" style="display:block;">
+                                ${explanation}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                answerBox.style.display = 'block';
+                
+                updateProgress();
+            });
+        });
+
+        // Keyboard navigation for carousel
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('carousel-view').style.display === 'block') {
+                if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if(savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<span class="btn-icon">☀️</span> Light Mode';
+            }
+            
+            changeView('carousel');
+            
+            const questions = document.querySelectorAll('.question');
+            questions.forEach((question, index) => {
+                question.style.animationDelay = `${index * 0.1}s`;
+                question.style.animation = 'fadeIn 0.5s ease forwards';
+            });
+            
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
