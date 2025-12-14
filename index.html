@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programming Languages Quiz 2 - Names, Bindings & Scopes</title>
+    <title>Programming Languages Syntax Quiz</title>
     <style>
     :root {
         --bg-color: #f8fafc;
@@ -20,7 +20,7 @@
         --incorrect-bg: #ffebee;
         --incorrect-border: #e53935;
         --gradient-color: rgba(42, 103, 111, 0.03);
-        --background-pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232a676f' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/svg%3E");
+        --background-pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232a676f' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/svg%3E");
         --slide-bg: #ffffff;
         --slide-header: #2a676f;
         --slide-border: #d1d5db;
@@ -31,13 +31,6 @@
         --glass-shadow: 0 4px 20px rgba(42, 103, 111, 0.15);
         --button-primary-bg: linear-gradient(135deg, #2a676f, #3a8893);
         --button-secondary-bg: linear-gradient(135deg, #a98a50, #c5a66a);
-        --highlight-bg: #fff3cd;
-        --highlight-text: #856404;
-        --highlight-border: #ffeeba;
-        /* Explanation Gold Theme */
-        --expl-bg: #fffde7;
-        --expl-border: #fbc02d;
-        --expl-text: #5d4037;
     }
 
     [data-theme="dark"] {
@@ -66,14 +59,26 @@
         --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         --button-primary-bg: linear-gradient(135deg, #38b2ac, #2a676f);
         --button-secondary-bg: linear-gradient(135deg, #f6ad55, #ed8936);
-        --highlight-bg: rgba(245, 158, 11, 0.2);
-        --highlight-text: #fef3c7;
-        --highlight-border: rgba(245, 158, 11, 0.4);
-        /* Explanation Gold Theme Dark */
-        --expl-bg: rgba(251, 192, 45, 0.15);
-        --expl-border: #fdd835;
-        --expl-text: #fff9c4;
     }
+
+/* إصلاح خلفية القروبات في الدارك مود */
+[data-theme="dark"] .grammar-group,
+[data-theme="dark"] .grammar-example {
+    /* جعل الخلفية غامقة وشفافة (بدلاً من الرمادي الفاتح) */
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    
+    /* جعل الحدود خفيفة جداً */
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    
+    /* إضافة ظل داخلي خفيف لتعزيز العمق */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* تحسين لون العنوان داخل القروب في الدارك مود */
+[data-theme="dark"] .grammar-group-title {
+    color: var(--primary-color); /* أو يمكنك استخدام #38b2ac للون أفتح قليلاً */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* ظل للنص ليبرز فوق الخلفية الغامقة */
+}
 
     * {
         margin: 0;
@@ -137,7 +142,7 @@
     }
 
     .quiz-header::after {
-        content: '📘';
+        content: '💻';
         position: absolute;
         right: 20px;
         top: 50%;
@@ -146,17 +151,7 @@
         font-size: 3rem;
     }
 
-    .quiz-subtitle {
-        text-align: center;
-        font-size: 1.2rem;
-        color: var(--text-color);
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background: var(--glass-bg);
-        border-radius: 10px;
-        border-left: 5px solid var(--primary-color);
-    }
-
+    /* Enhanced Glass Buttons */
     .controls {
         text-align: center;
         margin-bottom: 2rem;
@@ -220,140 +215,6 @@
         font-size: 1.1rem;
     }
 
-    /* Explanation Gold Styles */
-    .explanation-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-top: 8px;
-        animation: fadeIn 0.3s ease;
-    }
-
-    .btn-explanation {
-        background: var(--glass-bg);
-        border: 1px solid var(--primary-color);
-        color: var(--primary-color);
-        padding: 6px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    [data-theme="dark"] .btn-explanation {
-        border-color: var(--primary-color);
-        color: var(--primary-color);
-        background: rgba(56, 178, 172, 0.1);
-    }
-    
-    [data-theme="dark"] .btn-explanation:hover {
-        background: var(--primary-color);
-        color: #1a202c;
-    }
-
-    .explanation-content {
-        background: var(--expl-bg);
-        border-left: 4px solid var(--expl-border);
-        color: var(--expl-text);
-        border-radius: 8px;
-        padding: 15px;
-        width: 100%;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        font-size: 0.95rem;
-        line-height: 1.6;
-        position: relative;
-    }
-    
-    .explanation-content::before {
-        content: '💡';
-        margin-right: 8px;
-    }
-
-    /* "Show Correct Choice" Button Styles */
-    .btn-show-correct {
-        background: transparent;
-        border: 1px solid var(--incorrect-border);
-        color: var(--incorrect-border);
-        padding: 6px 14px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-left: 10px;
-        transition: all 0.2s ease;
-        display: inline-block;
-    }
-
-    .btn-show-correct:hover {
-        background: var(--incorrect-bg);
-        transform: translateY(-1px);
-    }
-
-    [data-theme="dark"] .btn-show-correct {
-        border-color: #f56565;
-        color: #f56565;
-    }
-    [data-theme="dark"] .btn-show-correct:hover {
-        background: rgba(245, 101, 101, 0.15);
-    }
-
-    /* Smart Dictionary Tooltip */
-    .word-tooltip {
-        position: relative;
-        cursor: help;
-        border-bottom: 2px dotted var(--primary-color);
-        transition: all 0.2s;
-    }
-
-    .word-tooltip:hover {
-        background-color: rgba(255, 235, 59, 0.3);
-        color: var(--primary-color);
-    }
-
-    .word-tooltip:hover::after {
-        content: attr(data-meaning);
-        position: absolute;
-        bottom: 130%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #333;
-        color: #fff;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        white-space: nowrap;
-        z-index: 100;
-        opacity: 0;
-        animation: tooltipPop 0.3s forwards;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .word-tooltip:hover::before {
-        content: '';
-        position: absolute;
-        bottom: 110%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 6px solid transparent;
-        border-top-color: #333;
-        opacity: 0;
-        animation: tooltipPop 0.3s forwards;
-    }
-
-    @keyframes tooltipPop {
-        to {
-            opacity: 1;
-            transform: translateX(-50%) translateY(5px);
-        }
-    }
-
     /* Question Styles */
     .question {
         margin-bottom: 2.5rem;
@@ -367,19 +228,78 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
+  /* 1. الايموجي الأساسي - تثبيت في الأعلى */
+.question::before {
+
+    position: absolute;
+    left: -25px; /* تعديل المسافة الجانبية */
+    
+    /* التغيير الجوهري هنا: بدلاً من 50% نثبته برقم ثابت */
+    top: 150px; 
+    
+    /* ألغينا translateY لأنه لم يعد في المنتصف */
+    transform: scale(1); 
+    
+    font-size: 1.8rem;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة ناعمة جداً */
+
+    background: var(--card-bg);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 2. حالة الإجابة الصحيحة */
+.question.answered-correct::before {
+
+    border-color: #43a047;
+    background-color: #e8f5e9;
+    /* التغيير: ألغينا translateY */
+    transform: scale(1.2) rotate(360deg); 
+}
+
+/* 3. حالة الإجابة الخاطئة */
+.question.answered-incorrect::before {
+
+    border-color: #e53935;
+    background-color: #ffebee;
+    /* التغيير: ألغينا translateY */
+    transform: scale(1.1); 
+    animation: shake 0.5s ease-in-out;
+}
+
+/* 4. عند تحويم الماوس على السؤال (اختياري لجمالية أكثر) */
+.question:hover::before {
+    transform: scale(1.1) rotate(10deg);
+    left: -28px; /* حركة بسيطة لليسار */
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* 4. انيميشن الاهتزاز للخطأ */
+@keyframes shake {
+    0%, 100% { margin-left: 0; }
+    25% { margin-left: -5px; }
+    75% { margin-left: 5px; }
+}
+
     .question:hover {
         transform: translateX(5px);
         border-color: var(--primary-color);
         box-shadow: 6px 6px 20px rgba(42, 103, 111, 0.1);
     }
 
-    .question h3 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        font-size: 1.3rem;
-        position: relative;
-        padding-left: 10px;
-        border-left: 4px solid var(--primary-color);
+    .question:hover::before {
+        transform: translateY(-50%) rotate(15deg) scale(1.1);
+        left: -35px;
+        color: var(--secondary-color);
+        border-color: var(--secondary-color);
     }
 
     .options label {
@@ -436,6 +356,7 @@
     }
 
     .correct::before {
+
         margin-right: 10px;
     }
 
@@ -446,6 +367,7 @@
     }
 
     .incorrect::before {
+
         margin-right: 10px;
     }
 
@@ -578,136 +500,146 @@
     }
 
     .slide-list-content li {
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.4rem;
     }
 
-    .slide-highlight {
-        background-color: var(--highlight-bg);
-        color: var(--highlight-text);
-        padding: 2px 6px;
-        border-radius: 4px;
-        border: 1px solid var(--highlight-border);
-        font-weight: 500;
-    }
+/* 1. تنسيق الحاوية الرئيسية */
+.slides-carousel {
+    display: flex;
+    flex-direction: column;
+    background: var(--slide-bg);
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    min-height: 400px;
+    margin-bottom: 3rem;
+    border: 1px solid var(--border-color);
+}
 
-    .slide-code {
-        background: var(--grammar-bg);
-        border: 1px solid var(--grammar-border);
-        border-radius: 8px;
-        padding: 1rem;
-        font-family: 'Courier New', monospace;
-        margin: 1rem 0;
-        overflow-x: auto;
-    }
+/* 2. تنسيق الشريط العلوي */
+.carousel-top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    /* لون الخلفية متدرج وجميل */
+    background: var(--quiz-header-bg); 
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 10;
+}
 
-    /* Carousel Styles */
-    .slides-carousel {
-        display: flex;
-        flex-direction: column;
-        background: var(--slide-bg);
-        border-radius: 15px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        overflow: hidden;
-        min-height: 400px;
-        margin-bottom: 3rem;
-        border: 1px solid var(--border-color);
-    }
+/* 3. تنسيق أزرار الأسهم (شكل زجاجي) */
+.carousel-nav-btn {
+    background: rgba(255, 255, 255, 0.2); /* خلفية شفافة */
+    color: #ffffff; /* لون السهم أبيض ناصع */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* حدود شبه شفافة */
+    border-radius: 50%; /* شكل دائري */
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px); /* تأثير ضبابي خلف الزر */
+}
 
-    .carousel-top-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        background: var(--quiz-header-bg);
-        color: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        z-index: 10;
-    }
+.carousel-nav-btn:hover {
+    background: #ffffff; /* عند التحويم يصبح أبيض كامل */
+    color: var(--primary-color); /* السهم يأخذ لون الثيم */
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
 
-    .carousel-nav-btn {
-        background: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 50%;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(5px);
-    }
+.carousel-nav-btn:active {
+    transform: scale(0.95);
+}
 
-    .carousel-nav-btn:hover {
-        background: #ffffff;
-        color: var(--primary-color);
-        transform: scale(1.1);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-    }
+/* 4. تنسيق الحبوب (Indicators) */
+.carousel-indicators {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1rem;
+}
 
-    .carousel-indicators {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        padding: 0 1rem;
-    }
+/* تنسيق حاوية النقاط */
+.carousel-indicators {
+    display: flex;
+    gap: 8px; /* مسافة بين النقاط */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+}
 
-    .carousel-indicator {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+/* تنسيق النقطة (غير النشطة) */
+.carousel-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    
+    /* التعديل هنا: جعلناها بيضاء بنسبة شفافية 40% لتظهر بوضوح */
+    background-color: rgba(255, 255, 255, 0.4); 
+    
+    /* حدود خفيفة لزيادة التباين */
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .carousel-indicator:hover {
-        background-color: rgba(255, 255, 255, 0.9);
-        transform: scale(1.2);
-    }
+/* عند مرور الماوس على النقطة */
+.carousel-indicator:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.2);
+}
 
-    .carousel-indicator.active {
-        background-color: #ffffff;
-        border-color: #ffffff;
-        transform: scale(1.35);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    }
+/* تنسيق النقطة النشطة (الحالية) */
+.carousel-indicator.active {
+    background-color: #ffffff; /* أبيض ناصع 100% */
+    border-color: #ffffff;
+    transform: scale(1.35); /* أكبر قليلاً */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* توهج خفيف */
+}
 
-    .slides-content-wrapper {
-        flex-grow: 1;
-        background: var(--slide-bg);
-    }
+/* 5. تنسيق المحتوى */
+.slides-content-wrapper {
+    flex-grow: 1;
+    background: var(--slide-bg);
+}
+
+.carousel-slide {
+    display: none;
+    flex-direction: column;
+    padding: 2.5rem; /* زيادة المسافة الداخلية */
+    animation: fadeIn 0.4s ease;
+}
+
+.carousel-slide.active {
+    display: flex;
+}
+/* إلغاء الستايلات القديمة (اختياري للتنظيف) */
+.carousel-bottom-nav { display: none; }
 
     .carousel-slide {
-        display: none;
-        flex-direction: column;
-        padding: 2.5rem;
-        animation: fadeIn 0.4s ease;
-    }
+    width: 100%;
+    height: auto; /* الارتفاع تلقائي */
+    background: transparent; /* الخلفية أصبحت في الحاوية الأب */
+    padding: 2rem;
+    padding-bottom: 80px; /* مسافة إضافية في الأسفل عشان الأزرار */
+    display: none;
+    flex-direction: column;
+    animation: slideIn 0.4s ease;
+}
 
-    .carousel-slide.active {
-        display: flex;
-    }
-
-    .carousel-slide {
-        width: 100%;
-        height: auto;
-        background: transparent;
-        padding: 2rem;
-        padding-bottom: 80px;
-        display: none;
-        flex-direction: column;
-        animation: slideIn 0.4s ease;
-    }
-
-    .carousel-slide.active {
-        display: flex;
-    }
+/* تأكد أن كلاس التفعيل يبقيها ظاهرة */
+.carousel-slide.active {
+    display: flex;
+}
 
     .carousel-header {
         display: flex;
@@ -745,13 +677,13 @@
     }
 
     .carousel-slide-content {
-        flex-grow: 1;
-        font-size: 1.05rem;
-        line-height: 1.7;
-        padding: 0.5rem;
-        overflow-y: visible;
-        max-height: none;
-    }
+    flex-grow: 1;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding: 0.5rem;
+    overflow-y: visible; /* إلغاء السكرول الداخلي */
+    max-height: none; /* إلغاء الحد الأقصى للارتفاع */
+}
 
     .carousel-slide-content ul, .carousel-slide-content ol {
         padding-left: 2rem;
@@ -760,6 +692,155 @@
 
     .carousel-slide-content li {
         margin-bottom: 0.6rem;
+    }
+
+    /* Bottom Navigation for Carousel */
+    .carousel-bottom-nav {
+    position: sticky; /* يلتصق بالأسفل */
+    top: 100%; /* حيلة لجعله في القاع */
+    margin-top: auto; /* يدفعه للأسفل إذا المحتوى قصير */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--glass-border);
+    z-index: 10;
+    border-radius: 0 0 15px 15px; /* تدوير الزوايا السفلية فقط */
+}
+
+    .carousel-nav-btn {
+        background: var(--button-primary-bg);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(42, 103, 111, 0.3);
+    }
+
+    .carousel-nav-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(42, 103, 111, 0.4);
+    }
+
+
+
+
+    /* Slide Table */
+    .slide-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .slide-table th {
+        background: var(--slide-header);
+        color: white;
+        padding: 0.8rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .slide-table td {
+        padding: 0.8rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .slide-table tr:nth-child(even) {
+        background-color: var(--option-bg);
+    }
+
+    .slide-table tr:hover {
+        background-color: var(--option-hover-bg);
+    }
+
+    /* Grammar Styling */
+    .grammar-example {
+        background: var(--grammar-bg);
+        border: 2px solid var(--grammar-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.2rem 0;
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .grammar-example .rule {
+        margin-bottom: 0.8rem;
+        padding-left: 1.2rem;
+        position: relative;
+    }
+
+    .grammar-example .rule::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+    .grammar-example .nonterminal {
+        color: #d35400;
+        font-weight: bold;
+    }
+
+    .grammar-example .terminal {
+        color: #2980b9;
+        font-weight: bold;
+    }
+
+    .grammar-group {
+        background: var(--grammar-bg);
+        border: 2px solid var(--grammar-border);
+        border-radius: 15px;
+        padding: 1.8rem;
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .grammar-group::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: var(--primary-color);
+    }
+
+    .grammar-group-title {
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .grammar-group-title::before {
+        content: '📝';
+        font-size: 1.5rem;
     }
 
     /* Doctor's Note */
@@ -775,7 +856,7 @@
     }
 
     .doctor-note::before {
-        content: '📌';
+
         position: absolute;
         top: 20px;
         right: 20px;
@@ -788,18 +869,21 @@
         font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: 1rem;
+        text-align: right;
+        direction: rtl;
     }
 
     .doctor-note-content {
         color: #92400e;
         font-size: 1.05rem;
         line-height: 1.7;
+        text-align: right;
+        direction: rtl;
         font-weight: 600;
-        white-space: pre-wrap;
     }
 
-    .doctor-note-content ol {
-        padding-left: 1.8rem;
+    .doctor-note-content ul {
+        padding-right: 1.8rem;
         margin: 1rem 0;
     }
 
@@ -808,38 +892,12 @@
         position: relative;
     }
 
-    /* Quiz Progress */
-    .quiz-progress {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding: 1rem;
-        background: var(--glass-bg);
-        border-radius: 10px;
-        border: 1px solid var(--glass-border);
-    }
-
-    .progress-bar {
-        flex-grow: 1;
-        height: 10px;
-        background: var(--border-color);
-        border-radius: 5px;
-        margin: 0 1rem;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        background: var(--primary-color);
-        border-radius: 5px;
-        transition: width 0.3s ease;
-    }
-
-    .progress-text {
-        font-weight: 600;
-        color: var(--primary-color);
-        white-space: nowrap;
+    .doctor-note-content li::before {
+        content: '✓';
+        position: absolute;
+        right: -1.5rem;
+        color: #16a34a;
+        font-weight: bold;
     }
 
     /* Footer */
@@ -906,6 +964,8 @@
         .carousel-slide-title {
             font-size: 1.4rem;
         }
+        
+        
     }
 
     @media (max-width: 768px) {
@@ -914,19 +974,13 @@
         }
         
         .controls {
-            flex-direction: row; /* Keep row for grid layout */
-            flex-wrap: wrap;     /* Allow wrapping */
-            gap: 10px;           /* Smaller gap */
-            padding: 1rem;
+            flex-direction: column;
+            align-items: stretch;
         }
         
         .btn {
-            width: auto;
-            flex: 1 1 calc(50% - 10px); /* Grow to fill space, basis 50% minus gap */
-            margin: 0;
-            min-width: 120px; /* Ensure buttons don't get too small */
-            padding: 0.8rem;  /* Reduce padding for mobile */
-            font-size: 0.9rem;
+            width: 100%;
+            margin: 0.3rem 0;
         }
         
         .slides-controls {
@@ -959,6 +1013,8 @@
             font-size: 1.3rem;
         }
         
+        
+        
         .carousel-slide-content {
             font-size: 1rem;
             padding: 0.3rem;
@@ -979,6 +1035,8 @@
             padding: 1rem;
         }
         
+        
+        
         .carousel-slide {
             padding: 1rem;
         }
@@ -991,6 +1049,14 @@
             width: 40px;
             height: 40px;
             font-size: 1.1rem;
+        }
+        
+        .slide-table {
+            font-size: 0.85rem;
+        }
+        
+        .slide-table th, .slide-table td {
+            padding: 0.6rem;
         }
         
         .carousel-bottom-nav {
@@ -1013,19 +1079,7 @@
 <body>
     <div class="quiz-container">
         <div class="quiz-header">
-            Programming Languages Quiz 2
-        </div>
-        
-        <div class="quiz-subtitle">
-            <strong>Topic:</strong> Names, Bindings & Scopes (Lecture 4) | <strong>Week 16</strong> | <strong>Worth:</strong> 10% of total mark
-        </div>
-        
-        <div class="quiz-progress">
-            <div class="progress-text">Quiz Progress:</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="quiz-progress" style="width: 0%"></div>
-            </div>
-            <div class="progress-text"><span id="answered-count">0</span>/11 Answered</div>
+            Programming Languages Syntax Quiz
         </div>
         
         <div class="controls">
@@ -1033,12 +1087,11 @@
                 <span class="btn-icon">🔄</span> Reset Quiz
             </button>
             <button class="btn" onclick="showAllAnswers()">
-                <span class="btn-icon">👁️</span> Show All Answers
+                <span class="btn-icon">👁️</span> Show Answers
             </button>
             <button class="btn" onclick="hideAllAnswers()">
-                <span class="btn-icon">🙈</span> Hide All Answers
+                <span class="btn-icon">🙈</span> Hide Answers
             </button>
-            <!-- Check My Answers button removed -->
             <button class="btn btn-secondary" id="themeToggle" onclick="toggleTheme()">
                 <span class="btn-icon">🌙</span> Dark Mode
             </button>
@@ -1049,156 +1102,197 @@
 
         <!-- Questions Section -->
         <div id="questions-section">
-            <!-- Question 1 -->
+            <!-- Questions 1-15 from the PDF -->
             <div class="question">
-                <h3>1. In programming, names can be associated with which of the following?</h3>
+                <h3>1. Who are the main users of a language definition?</h3>
                 <div class="options">
-                    <label><input type="radio" name="q1" value="a"> a) Subprograms</label>
-                    <label><input type="radio" name="q1" value="b"> b) Formal parameters</label>
-                    <label><input type="radio" name="q1" value="c"> c) Variables</label>
-                    <label><input type="radio" name="q1" value="d"> d) All of the above</label>
+                    <label><input type="radio" name="q1" value="a"> a) Network administrators, testers, and database managers</label>
+                    <label><input type="radio" name="q1" value="b"> b) Only programmers who write code</label>
+                    <label><input type="radio" name="q1" value="c"> c) Language designers, implementers, and programmers</label>
+                    <label><input type="radio" name="q1" value="d"> d) End-users who use software applications</label>
                 </div>
-                <!-- Hint removed -->
-                <div class="answer-box" id="answer1" data-correct-answer="d" data-explanation="Names are associated with subprograms, formal parameters, variables, and other program constructs (Slide 6).">
-                    Correct Answer: d) All of the above<br><br><em>Explanation: Names are associated with subprograms, formal parameters, variables, and other program constructs (Slide 6).</em>
+                <div class="answer-box" id="answer1" data-correct-answer="c">Correct Answer: c) Language designers, implementers, and programmers</div>
+            </div>
+
+            <div class="question">
+                <h3>2. What is a lexeme?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> a) The entire program written by the user</label>
+                    <label><input type="radio" name="q2" value="b"> b) The lowest-level syntactic unit of a language</label>
+                    <label><input type="radio" name="q2" value="c"> c) A data type used in programming</label>
+                    <label><input type="radio" name="q2" value="d"> d) A comment written by the programmer</label>
+                </div>
+                <div class="answer-box" id="answer2" data-correct-answer="b">Correct Answer: b) The lowest-level syntactic unit of a language</div>
+            </div>
+
+            <div class="question">
+                <h3>3. Which of the following is an example of a lexeme?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> a) if</label>
+                    <label><input type="radio" name="q3" value="b"> b) sum</label>
+                    <label><input type="radio" name="q3" value="c"> c) *</label>
+                    <label><input type="radio" name="q3" value="d"> d) All of the above</label>
+                </div>
+                <div class="answer-box" id="answer3" data-correct-answer="d">Correct Answer: d) All of the above</div>
+            </div>
+
+            <div class="question">
+                <h3>4. What is a token?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> a) A category/class of lexemes</label>
+                    <label><input type="radio" name="q4" value="b"> b) A machine instruction</label>
+                    <label><input type="radio" name="q4" value="c"> c) A memory cell</label>
+                    <label><input type="radio" name="q4" value="d"> d) A variable name only</label>
+                </div>
+                <div class="answer-box" id="answer4" data-correct-answer="a">Correct Answer: a) A category/class of lexemes</div>
+            </div>
+
+            <div class="question">
+                <h3>5. Which of the following is an example of a token?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> a) begin</label>
+                    <label><input type="radio" name="q5" value="b"> b) sum</label>
+                    <label><input type="radio" name="q5" value="c"> c) *</label>
+                    <label><input type="radio" name="q5" value="d"> d) identifier</label>
+                </div>
+                <div class="answer-box" id="answer5" data-correct-answer="d">Correct Answer: d) identifier</div>
+            </div>
+
+            <div class="question">
+                <h3>6. In a BNF grammar, what is the starting symbol?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="a"> a) Any terminal that appears first in the program</label>
+                    <label><input type="radio" name="q6" value="b"> b) The nonterminal from which all derivations begin</label>
+                    <label><input type="radio" name="q6" value="c"> c) The lexeme that starts every statement</label>
+                    <label><input type="radio" name="q6" value="d"> d) The first token read by the compiler</label>
+                </div>
+                <div class="answer-box" id="answer6" data-correct-answer="b">Correct Answer: b) The nonterminal from which all derivations begin</div>
+            </div>
+
+            <!-- Grammar Group 1 -->
+            <div class="grammar-group">
+                <div class="grammar-group-title">Given the grammar:</div>
+                <div class="grammar-example">
+                    <div class="rule">&lt;S&gt; → &lt;A&gt; b</div>
+                    <div class="rule">&lt;A&gt; → a &lt;A&gt; | a</div>
+                </div>
+
+                <div class="question">
+                    <h3>7. What is the starting symbol of this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="a"> a) a</label>
+                        <label><input type="radio" name="q7" value="b"> b) &lt;A&gt;</label>
+                        <label><input type="radio" name="q7" value="c"> c) &lt;S&gt;</label>
+                        <label><input type="radio" name="q7" value="d"> d) b</label>
+                    </div>
+                    <div class="answer-box" id="answer7" data-correct-answer="c">Correct Answer: c) &lt;S&gt;</div>
                 </div>
             </div>
 
-            <!-- Question 2 -->
-            <div class="question">
-                <h3>2. The term "identifier" is often used interchangeably with "variables."</h3>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="a"> a) True</label>
-                    <label><input type="radio" name="q2" value="b"> b) False</label>
+            <!-- Grammar Group 2 -->
+            <div class="grammar-group">
+                <div class="grammar-group-title">Given the grammar:</div>
+                <div class="grammar-example">
+                    <div class="rule">&lt;stmt&gt; → &lt;assign&gt; | begin &lt;stmt_list&gt; end</div>
+                    <div class="rule">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
                 </div>
-                <div class="answer-box" id="answer2" data-correct-answer="b" data-explanation="The term identifier is often used interchangeably with &quot;name&quot;, not specifically with &quot;variables&quot; (Slide 6).">
-                    Correct Answer: b) False<br><br><em>Explanation: The term identifier is often used interchangeably with "name", not specifically with "variables" (Slide 6).</em>
+
+                <div class="question">
+                    <h3>8. What is the starting symbol of this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="a"> a) begin</label>
+                        <label><input type="radio" name="q8" value="b"> b) &lt;assign&gt;</label>
+                        <label><input type="radio" name="q8" value="c"> c) &lt;stmt&gt;</label>
+                        <label><input type="radio" name="q8" value="d"> d) end</label>
+                    </div>
+                    <div class="answer-box" id="answer8" data-correct-answer="c">Correct Answer: c) &lt;stmt&gt;</div>
+                </div>
+
+                <div class="question">
+                    <h3>9. How many rules are in this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="a"> a) 1</label>
+                        <label><input type="radio" name="q9" value="b"> b) 2</label>
+                        <label><input type="radio" name="q9" value="c"> c) 3</label>
+                        <label><input type="radio" name="q9" value="d"> d) 4</label>
+                    </div>
+                    <div class="answer-box" id="answer9" data-correct-answer="c">Correct Answer:c) 3</div>
+                </div>
+
+                <div class="question">
+                    <h3>10. How many terminal symbols appear in the grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="a"> a) 1</label>
+                        <label><input type="radio" name="q10" value="b"> b) 2</label>
+                        <label><input type="radio" name="q10" value="c"> c) 3</label>
+                        <label><input type="radio" name="q10" value="d"> d) 4</label>
+                    </div>
+                    <div class="answer-box" id="answer10" data-correct-answer="c">Correct Answer: c) 3 (begin, end, =)</div>
+                </div>
+
+                <div class="question">
+                    <h3>11. How many nonterminal symbols are in this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="a"> a) 3</label>
+                        <label><input type="radio" name="q11" value="b"> b) 4</label>
+                        <label><input type="radio" name="q11" value="c"> c) 5</label>
+                        <label><input type="radio" name="q11" value="d"> d) 6</label>
+                    </div>
+                    <div class="answer-box" id="answer11" data-correct-answer="c">Correct Answer: c) 5 (&lt;stmt&gt;, &lt;assign&gt;, &lt;var&gt;, &lt;expression&gt;)</div>
                 </div>
             </div>
 
-            <!-- Question 3 -->
-            <div class="question">
-                <h3>3. In PHP, all variable names must begin with:</h3>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="a"> a) #</label>
-                    <label><input type="radio" name="q3" value="b"> b) $</label>
-                    <label><input type="radio" name="q3" value="c"> c) %</label>
-                    <label><input type="radio" name="q3" value="d"> d) &</label>
+            <!-- Grammar Group 3 -->
+            <div class="grammar-group">
+                <div class="grammar-group-title">Given the grammar:</div>
+                <div class="grammar-example">
+                    <div class="rule">&lt;if_stmt&gt; → if (&lt;logic_expr&gt;) &lt;stmt&gt;</div>
+                    <div class="rule">&lt;stmt&gt; → &lt;assign&gt; ;</div>
+                    <div class="rule">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
                 </div>
-                <div class="answer-box" id="answer3" data-correct-answer="b" data-explanation="PHP requires all variable names to begin with dollar signs ($) (Slide 8).">
-                    Correct Answer: b) $<br><br><em>Explanation: PHP requires all variable names to begin with dollar signs ($) (Slide 8).</em>
-                </div>
-            </div>
 
-            <!-- Question 4 -->
-            <div class="question">
-                <h3>4. Which of the following best describes a variable in programming?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="a"> a) An abstraction of a function or a collection of functions</label>
-                    <label><input type="radio" name="q4" value="b"> b) An abstraction of a data type or a collection of types</label>
-                    <label><input type="radio" name="q4" value="c"> c) An abstraction of a memory cell or a collection of cells</label>
-                    <label><input type="radio" name="q4" value="d"> d) An abstraction of a keyword or a collection of keywords</label>
+                <div class="question">
+                    <h3>12. What is the starting symbol of this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="a"> a) &lt;if_stmt&gt;</label>
+                        <label><input type="radio" name="q12" value="b"> b) &lt;assign&gt;</label>
+                        <label><input type="radio" name="q12" value="c"> c) &lt;logic_expr&gt;</label>
+                        <label><input type="radio" name="q12" value="d"> d) =</label>
+                    </div>
+                    <div class="answer-box" id="answer12" data-correct-answer="a">Correct Answer: a) &lt;if_stmt&gt;</div>
                 </div>
-                <div class="answer-box" id="answer4" data-correct-answer="c" data-explanation="A variable is an abstraction of a memory cell or collection of cells (Slide 11).">
-                    Correct Answer: c) An abstraction of a memory cell or a collection of cells<br><br><em>Explanation: A variable is an abstraction of a memory cell or collection of cells (Slide 11).</em>
-                </div>
-            </div>
 
-            <!-- Question 5 -->
-            <div class="question">
-                <h3>5. In programming, the I-value of a variable refers to:</h3>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="a"> a) The actual value stored in the variable</label>
-                    <label><input type="radio" name="q5" value="b"> b) The memory address where the variable is stored</label>
-                    <label><input type="radio" name="q5" value="c"> c) The result of an expression using the variable</label>
-                    <label><input type="radio" name="q5" value="d"> d) The symbolic name used to refer to the variable</label>
+                <div class="question">
+                    <h3>13. How many rules are in this grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q13" value="a"> a) 1</label>
+                        <label><input type="radio" name="q13" value="b"> b) 2</label>
+                        <label><input type="radio" name="q13" value="c"> c) 3</label>
+                        <label><input type="radio" name="q13" value="d"> d) 4</label>
+                    </div>
+                    <div class="answer-box" id="answer13" data-correct-answer="c">Correct Answer: c) 3</div>
                 </div>
-                <div class="answer-box" id="answer5" data-correct-answer="b" data-explanation="The I-value (location value) of a variable is its memory address (Slide 12).">
-                    Correct Answer: b) The memory address where the variable is stored<br><br><em>Explanation: The I-value (location value) of a variable is its memory address (Slide 12).</em>
-                </div>
-            </div>
 
-            <!-- Question 6 -->
-            <div class="question">
-                <h3>6. In programming, the r-value of a variable refers to:</h3>
-                <div class="options">
-                    <label><input type="radio" name="q6" value="a"> a) The memory address where the variable is stored</label>
-                    <label><input type="radio" name="q6" value="b"> b) The actual value stored in the variable</label>
-                    <label><input type="radio" name="q6" value="c"> c) The result of an expression using the variable</label>
-                    <label><input type="radio" name="q6" value="d"> d) The symbolic name used to refer to the variable</label>
+                <div class="question">
+                    <h3>14. How many terminal symbols appear in the grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="a"> a) 3</label>
+                        <label><input type="radio" name="q14" value="b"> b) 4</label>
+                        <label><input type="radio" name="q14" value="c"> c) 5</label>
+                        <label><input type="radio" name="q14" value="d"> d) 6</label>
+                    </div>
+                    <div class="answer-box" id="answer14" data-correct-answer="c">Correct Answer:c) 5</div>
                 </div>
-                <div class="answer-box" id="answer6" data-correct-answer="b" data-explanation="The r-value (read value) is the actual value stored in the variable (Slide 13).">
-                    Correct Answer: b) The actual value stored in the variable<br><br><em>Explanation: The r-value (read value) is the actual value stored in the variable (Slide 13).</em>
-                </div>
-            </div>
 
-            <!-- Question 7 -->
-            <div class="question">
-                <h3>7. Which attribute of a variable determines the range of values and the set of operations that can be performed on it?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q7" value="a"> a) Value</label>
-                    <label><input type="radio" name="q7" value="b"> b) Address</label>
-                    <label><input type="radio" name="q7" value="c"> c) Type</label>
-                    <label><input type="radio" name="q7" value="d"> d) Identifier</label>
-                </div>
-                <div class="answer-box" id="answer7" data-correct-answer="c" data-explanation="The type determines the range of values and operations for a variable (Slide 13).">
-                    Correct Answer: c) Type<br><br><em>Explanation: The type determines the range of values and operations for a variable (Slide 13).</em>
-                </div>
-            </div>
-
-            <!-- Question 8 -->
-            <div class="question">
-                <h3>8. Which of the following is an example of variable binding time at design time?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q8" value="a"> a) int factor;</label>
-                    <label><input type="radio" name="q8" value="b"> b) area = length * width;</label>
-                    <label><input type="radio" name="q8" value="c"> c) float area = 20.2;</label>
-                    <label><input type="radio" name="q8" value="d"> d) static int counter;</label>
-                </div>
-                <div class="answer-box" id="answer8" data-correct-answer="b" data-explanation="At language design time, operator symbols like * are bound to operations (Slide 15).">
-                    Correct Answer: b) area = length * width;<br><br><em>Explanation: At language design time, operator symbols like * are bound to operations (Slide 15).</em>
-                </div>
-            </div>
-
-            <!-- Question 9 -->
-            <div class="question">
-                <h3>9. Which of the following is an example of variable binding time at implementation time?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q9" value="a"> a) int factor;</label>
-                    <label><input type="radio" name="q9" value="b"> b) float area = 20.2;</label>
-                    <label><input type="radio" name="q9" value="c"> c) static int counter;</label>
-                    <label><input type="radio" name="q9" value="d"> d) void compute() { ... }</label>
-                </div>
-                <div class="answer-box" id="answer9" data-correct-answer="b" data-explanation="At implementation time, floating point type is bound to a representation (Slide 15).">
-                    Correct Answer: b) float area = 20.2;<br><br><em>Explanation: At implementation time, floating point type is bound to a representation (Slide 15).</em>
-                </div>
-            </div>
-
-            <!-- Question 10 -->
-            <div class="question">
-                <h3>10. Which of the following is an example of variable binding time at compile time?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q10" value="a"> a) int factor;</label>
-                    <label><input type="radio" name="q10" value="b"> b) static int counter;</label>
-                    <label><input type="radio" name="q10" value="c"> c) int localVar;</label>
-                    <label><input type="radio" name="q10" value="d"> d) #include &lt;stdio.h&gt;</label>
-                </div>
-                <div class="answer-box" id="answer10" data-correct-answer="a" data-explanation="At compile time, variables are bound to types in languages like C or Java (Slide 15).">
-                    Correct Answer: a) int factor;<br><br><em>Explanation: At compile time, variables are bound to types in languages like C or Java (Slide 15).</em>
-                </div>
-            </div>
-
-            <!-- Question 11 -->
-            <div class="question">
-                <h3>11. Which of the following is an example of variable binding time at link time?</h3>
-                <div class="options">
-                    <label><input type="radio" name="q11" value="a"> a) static int counter;</label>
-                    <label><input type="radio" name="q11" value="b"> b) int localVar;</label>
-                    <label><input type="radio" name="q11" value="c"> c) int factor;</label>
-                    <label><input type="radio" name="q11" value="d"> d) int m = java.lang.Math.max(20, 22);</label>
-                </div>
-                <div class="answer-box" id="answer11" data-correct-answer="d" data-explanation="At link time, library subprogram calls are bound to the subprogram code (Slide 16).">
-                    Correct Answer: d) int m = java.lang.Math.max(20, 22);<br><br><em>Explanation: At link time, library subprogram calls are bound to the subprogram code (Slide 16).</em>
+                <div class="question">
+                    <h3>15. How many nonterminal symbols appear in the grammar?</h3>
+                    <div class="options">
+                        <label><input type="radio" name="q15" value="a"> a) 3</label>
+                        <label><input type="radio" name="q15" value="b"> b) 4</label>
+                        <label><input type="radio" name="q15" value="c"> c) 5</label>
+                        <label><input type="radio" name="q15" value="d"> d) 6</label>
+                    </div>
+                    <div class="answer-box" id="answer15" data-correct-answer="d">Correct Answer: d) 6</div>
                 </div>
             </div>
         </div>
@@ -1206,212 +1300,291 @@
         <!-- Slides Section -->
         <div class="slides-section hidden" id="slides-section">
             <div class="slides-header">
-                السلايدات المحدده (Lecture 4)
+                السلايدات المحدده - Selected Slides (5-16)
             </div>
             
             <div class="slides-controls">
                 <button class="view-btn" onclick="changeView('list')">
-                    <span>📄</span> List
+                    <span>📄</span> قائمة
                 </button>
                 <button class="view-btn active" onclick="changeView('carousel')">
-                    <span>🎬</span> Slides
+                    <span>🎬</span> شرائح
                 </button>
             </div>
 
-            <!-- List View -->
-            <div class="slides-list" id="list-view">
-                <!-- Slide 6 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">6</div>
-                    <div class="slide-list-title">Names</div>
-                    <div class="slide-list-content">
-                        <p>Names are one of the <span class="word-tooltip" data-meaning="أساسي">fundamental</span> attributes of variables.</p>
-                        <ul>
-                            <li><span class="slide-highlight">Names are also <span class="word-tooltip" data-meaning="مرتبط">associated</span> with subprograms, formal parameters, and other program <span class="word-tooltip" data-meaning="تراكيب / بناءات">constructs</span>.</span></li>
-                            <li><span class="slide-highlight">The term identifier is often used <span class="word-tooltip" data-meaning="بالتبادل">interchangeably</span> with name.</span></li>
-                        </ul>
-                        <p>Design issues for names:</p>
-                        <ul>
-                            <li>Are names case sensitive?</li>
-                            <li>Are special words of the language reserved words or keywords?</li>
-                        </ul>
+<!-- Replace the slides-list div with this corrected version -->
+<div class="slides-list" id="list-view">
+    <!-- Slide 5 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">5</div>
+        <div class="slide-list-title">Introduction: Language Users</div>
+        <div class="slide-list-content">
+            <p>Users of a language definition:</p>
+            <ul>
+                <li><strong>Other language designers</strong> (evaluators)</li>
+                <li><strong>Implementers</strong></li>
+                <li><strong>Programmers</strong> (the users of the language)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">6</div>
+        <div class="slide-list-title">The General Problem of Describing Syntax: Terminology</div>
+        <div class="slide-list-content">
+            <ul>
+                <li>A <strong>sentence</strong> (statement) is a string of characters over some alphabet</li>
+                <li>A <strong>language</strong> is a set of sentences (statements)</li>
+                <li>A <strong>lexeme</strong> is the lowest level syntactic unit of a language
+                    <ul>
+                        <li>Examples: <code>*</code>, <code>sum</code>, <code>begin</code></li>
+                        <li>Includes: operators, special words, numerical literals, etc.</li>
+                    </ul>
+                </li>
+                <li>A <strong>token</strong> is a category of lexemes
+                    <ul>
+                        <li>Example: <code>identifier</code> (category for lexemes like <code>sum</code>, <code>count</code>)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">7</div>
+        <div class="slide-list-title">Example: Lexemes and Tokens</div>
+        <div class="slide-list-content">
+            <p>Consider the following Java statement:</p>
+            <div class="grammar-example">index = 2 * count + 17;</div>
+            
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th>Lexemes</th>
+                        <th>Tokens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>index</code></td><td><strong>identifier</strong></td></tr>
+                    <tr><td><code>=</code></td><td><strong>equal_sign</strong></td></tr>
+                    <tr><td><code>2</code></td><td><strong>int_literal</strong></td></tr>
+                    <tr><td><code>*</code></td><td><strong>mult_op</strong></td></tr>
+                    <tr><td><code>count</code></td><td><strong>identifier</strong></td></tr>
+                    <tr><td><code>+</code></td><td><strong>plus_op</strong></td></tr>
+                    <tr><td><code>17</code></td><td><strong>int_literal</strong></td></tr>
+                    <tr><td><code>;</code></td><td><strong>semicolon</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">8</div>
+        <div class="slide-list-title">Formal Definition of Languages</div>
+        <div class="slide-list-content">
+            <p><strong>Recognizers:</strong></p>
+            <ul>
+                <li>A recognition device reads input strings over the alphabet of the language and decides whether the input strings belong to the language (accept or reject the given input strings)</li>
+                <li>Example: syntax analysis (parsing) part of a compiler
+                    <ul>
+                        <li>The syntax analyzer determines whether the given programs are syntactically correct</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p><strong>Generators:</strong></p>
+            <ul>
+                <li>A device that generates sentences of a language</li>
+                <li>One can determine if the syntax of a particular sentence is syntactically correct by comparing it to the structure of the generator</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">9</div>
+        <div class="slide-list-title">BNF and Context-Free Grammars</div>
+        <div class="slide-list-content">
+            <p><strong>Context-Free Grammars:</strong></p>
+            <ul>
+                <li>Developed by Noam Chomsky in the mid-1950s</li>
+                <li>Language generators, meant to describe the syntax of natural languages</li>
+                <li>Define a class of languages called context-free languages</li>
+            </ul>
+            
+            <p><strong>Backus-Naur Form (1959):</strong></p>
+            <ul>
+                <li>Invented by John Backus to describe the syntax of Algol 58</li>
+                <li>BNF is equivalent to context-free grammars</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">10</div>
+        <div class="slide-list-title">BNF Fundamentals</div>
+        <div class="slide-list-content">
+            <ul>
+                <li>BNF is a natural notation for describing syntax</li>
+                <li>In BNF, abstractions are used to represent classes of syntactic structures
+                    <ul>
+                        <li>They act like syntactic variables (also called <em>nonterminal symbols</em>)</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p><strong>Example:</strong></p>
+            <ul>
+                <li>A simple Java assignment statement might be represented by the abstraction <code>&lt;assign&gt;</code></li>
+                <li>Pointed brackets are often used to delimit names of abstractions</li>
+                <li>The actual definition of <code>&lt;assign&gt;</code> can be given by:
+                    <div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">11</div>
+        <div class="slide-list-title">BNF Fundamentals (continued)</div>
+        <div class="slide-list-content">
+            <ul>
+                <li><strong>Terminals</strong> are lexemes or tokens</li>
+                <li>A <strong>rule</strong> has a left-hand side (LHS), which is a nonterminal, and a right-hand side (RHS), which is a string of terminals and/or nonterminals</li>
+                <li>Rules are also called <strong>productions</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">12</div>
+        <div class="slide-list-title">Rule Components and Structure</div>
+        <div class="slide-list-content">
+            <div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+            
+                            <li>The text on the left side of the arrow, which is aptly called the <strong>left-hand side (LHS)</strong>, is the abstraction being defined.</li>
+                
+                <li>The text to the right of the arrow is the definition of the LHS. It is called the <strong>right-hand side (RHS)</strong> and consists of some mixture of tokens, lexemes, and references to other abstractions. (Actually, tokens are also abstractions.)</li>
+                
+                <li>Altogether, the definition is called a <strong>rule</strong>, or <strong>production</strong>.</li>
+                
+                <li>In the example rule just given, the abstractions <code>&lt;var&gt;</code> and <code>&lt;expression&gt;</code> obviously must be defined for the <code>&lt;assign&gt;</code> definition to be useful.</li>
+        </div>
+    </div>
+
+    <!-- Slide 13 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">13</div>
+        <div class="slide-list-title">How a rule can be read?</div>
+        <div class="slide-list-content">
+            <div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+            
+<li>This particular rule specifies that the abstraction <code>&lt;assign&gt;</code> is defined as an instance of the abstraction <code>&lt;var&gt;</code>, followed by the lexeme <code>=</code> followed by an instance of the abstraction <code>&lt;expression&gt;</code>.</li>
+                
+                <li><strong>One example sentence whose syntactic structure is described by the rule above is:</strong></li>
+
+            <div class="grammar-example">total = subtotal1 + subtotal2</div>
+        </div>
+    </div>
+
+    <!-- Slide 14 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">14</div>
+        <div class="slide-list-title">BNF Fundamentals (continued)</div>
+        <div class="slide-list-content">
+            <ul>
+                <li><strong>Nonterminals</strong> are often enclosed in "angle brackets" (abstraction)</li>
+                <li><strong>Examples of BNF rules:</strong>
+                    <div class="grammar-example">
+                        <div class="rule">&lt;ident_list&gt; → identifier | identifier, &lt;ident_list&gt;</div>
+                        <div class="rule">&lt;if_stmt&gt; → if &lt;logic_expr&gt; then &lt;stmt&gt;</div>
                     </div>
+                </li>
+                <li><strong>Grammar:</strong> a finite non-empty set of rules</li>
+                <li>A <strong>start symbol</strong> is a special element of the nonterminals of a grammar
+                    <ul>
+                        <li>Usually represents a complete program</li>
+                        <li>Often named <code>&lt;program&gt;</code> or similar</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 15 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">15</div>
+        <div class="slide-list-title">BNF Rules</div>
+        <div class="slide-list-content">
+            <li>An <strong>abstraction</strong> (or nonterminal symbol) can have more than one RHS:</li>
+                <div class="grammar-example">
+                    <div class="rule">&lt;stmt&gt; → &lt;single_stmt&gt;</div>
+                    <div class="rule">&lt;stmt&gt; → begin &lt;stmt_list&gt; end</div>
                 </div>
+                
+                <li>These two rules can be written as:</li>
+                <div class="grammar-example">&lt;stmt&gt; → &lt;single_stmt&gt; | begin &lt;stmt_list&gt; end</div>
+        </div>
+    </div>
 
-                <!-- Slide 8 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">8</div>
-                    <div class="slide-list-title">Names Forms (continued)</div>
-                    <div class="slide-list-content">
-                        <p>Special Characters:</p>
-                        <ul>
-                            <li><strong>PHP:</strong> <span class="slide-highlight">all variable names must begin with dollar signs ($).</span></li>
-                            <li>Perl: all variable names begin with special characters ($, @ or %), which specify the variable's type.</li>
-                            <li>Ruby: variable names that begin with @ are instance variables; those that begin with @@ are class variables.</li>
-                        </ul>
-                    </div>
+    <!-- Slide 16 -->
+    <div class="slide-list-item">
+        <div class="slide-list-number">16</div>
+        <div class="slide-list-title">BNF Rules: More Examples</div>
+        <div class="slide-list-content">
+            <li>A Java if statement can be described with the rules:</li>
+                <div class="grammar-example">
+                    <div class="rule">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt;</div>
+                    <div class="rule">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt; else &lt;stmt&gt;</div>
                 </div>
-
-                <!-- Slide 11 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">11</div>
-                    <div class="slide-list-title">Variables</div>
-                    <div class="slide-list-content">
-                        <p><span class="slide-highlight">A variable is an <span class="word-tooltip" data-meaning="تجريد (فكرة عامة)">abstraction</span> of a memory cell or a collection of cells.</span></p>
-                        <p>Variables can be characterized as a sextuple of <span class="word-tooltip" data-meaning="خصائص / سمات">attributes</span>:</p>
-                        <ol>
-                            <li>Name</li>
-                            <li>Address</li>
-                            <li>Value</li>
-                            <li>Type</li>
-                            <li>Lifetime</li>
-                            <li>Scope</li>
-                        </ol>
-                    </div>
-                </div>
-
-                <!-- Slide 12 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">12</div>
-                    <div class="slide-list-title">Variables Attributes</div>
-                    <div class="slide-list-content">
-                        <ul>
-                            <li><strong>Name:</strong> the most common names in programs and not all variables have them.</li>
-                            <li><strong>Address:</strong> <span class="slide-highlight">the memory address (I-value) with which it is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.</span>
-                                <ul>
-                                    <li>A variable may have different addresses at different times during execution (like in a subprogram calls).</li>
-                                    <li>A variable may have different addresses at different places in a program (like in dynamic-allocation).</li>
-                                    <li>If two variable names can be used to access the same memory location, they are called aliases.</li>
-                                    <li>Aliases are created via pointers, reference variables, C and C++ unions types.</li>
-                                    <li>Aliases are harmful to readability (program readers must remember all of them).</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Slide 13 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">13</div>
-                    <div class="slide-list-title">Variables Attributes (continued)</div>
-                    <div class="slide-list-content">
-                        <ul>
-                            <li><strong>Type:</strong> <span class="slide-highlight">determines the range of values of variables and the set of operations that are defined for values of that type.</span>
-                                <ul>
-                                    <li>In the case of floating point, type also determines the precision.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Value:</strong> the contents of the location with which the variable is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.
-                                <ul>
-                                    <li>The I-value of a variable is its address.</li>
-                                    <li>The r-value of a variable is its value (needs I-value to be accessed first).</li>
-                                    <li>Abstract memory cell: the physical cell or collection of cells <span class="word-tooltip" data-meaning="مرتبط">associated</span> with a variable.</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Slide 15 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">15</div>
-                    <div class="slide-list-title">Possible Binding Times</div>
-                    <div class="slide-list-content">
-                        <p><strong>Language Design Time:</strong></p>
-                        <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> operator symbols to operations.</span>
-                                <ul><li>E.g., the asterisk symbol (*) is usually bound to the multiplication operation...etc.</li></ul>
-                                <div class="slide-code">area = length * width;</div>
-                            </li>
-                        </ul>
-                        
-                        <p><strong>Language <span class="word-tooltip" data-meaning="تنفيذ">Implementation</span> Time:</strong></p>
-                        <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> floating point data type to a representation (a range of possible values).</span>
-                                <div class="slide-code">float area = 20.2;</div>
-                            </li>
-                        </ul>
-                        
-                        <p><strong><span class="word-tooltip" data-meaning="وقت الترجمة">Compile Time</span>:</strong></p>
-                        <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a variable to a type in C or Java.</span>
-                                <div class="slide-code">int factor;</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Slide 16 -->
-                <div class="slide-list-item">
-                    <div class="slide-list-number">16</div>
-                    <div class="slide-list-title">Possible Binding Times (continued)</div>
-                    <div class="slide-list-content">
-                         <p><strong>Load Time:</strong></p>
-                        <ul>
-                            <li>Example: bind a C or C++ <span class="word-tooltip" data-meaning="ثابت">static</span> variable to a memory cell.</li>
-                            <li>E.g., binding the previous "area" variable to the memory cell (a storage) "0x00000000"</li>
-                        </ul>
-
-                        <p><strong>Link Time:</strong></p>
-                        <ul>
-                            <li><span class="slide-highlight">Example: a call to a library subprogram is bound to the subprogram code at link time.</span>
-                                <div class="slide-code">int m = java.lang.Math.max(20, 22);</div>
-                            </li>
-                        </ul>
-                        
-                        <p><strong><span class="word-tooltip" data-meaning="وقت التشغيل">Run Time</span>:</strong></p>
-                        <ul>
-                            <li>Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a non-static local variable to a memory cell.</li>
-                            <li>E.g., variables declared in Java methods.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
+                
+                <li>Or combined into a single rule using the pipe symbol:</li>
+                <div class="grammar-example">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt; | if ( &lt;logic_expr&gt; ) &lt;stmt&gt; else &lt;stmt&gt;</div>
+        </div>
+    </div>
+</div>
             <!-- Carousel View -->
-            <div class="slides-carousel" id="carousel-view">
-                <div class="carousel-top-nav">
-                    <button class="carousel-nav-btn" onclick="prevSlide()" title="Previous">❮</button>
-                    
-                    <div class="carousel-indicators" id="carousel-indicators">
-                        <!-- Indicators will be generated by JavaScript -->
-                    </div>
-
-                    <button class="carousel-nav-btn" onclick="nextSlide()" title="Next">❯</button>
-                </div>
-
-                <div id="slides-container" class="slides-content-wrapper">
-                    <!-- Slides will be generated by JavaScript -->
-                </div>
+<div class="slides-carousel" id="carousel-view">
+    <div class="carousel-top-nav">
+        <button class="carousel-nav-btn" onclick="prevSlide()" title="السابق">❮</button>
+        
+        <div class="carousel-indicators" id="carousel-indicators">
             </div>
 
-            <!-- Doctor's Note (Custom) -->
+        <button class="carousel-nav-btn" onclick="nextSlide()" title="التالي">❯</button>
+    </div>
+
+    <div id="slides-container" class="slides-content-wrapper">
+        </div>
+</div>
+
+            <!-- Doctor's Note -->
             <div class="doctor-note">
-                <div class="doctor-note-title">Doctor's Note:</div>
-                <div class="doctor-note-content"><p>Dears,</p>
-
-<p>We are having our Quiz 2 next week (Week 16). The quiz is worth 10% of the total mark and covers some slides from lecture 4 (Names, Bindings & Scopes). To do well in this quiz, we must understand the following:</p>
-
-<ol>
-<li>Names are also associated with subprogrammes, formal parameters, and other program constructs. (Slide 6)</li>
-<li>The term identifier is often used interchangeably with name. (Slide 6)</li>
-<li>In PHP, all variable names must begin with dollar signs ($). (Slide 8)</li>
-<li>A variable is an abstraction of a memory cell or a collection of cells. (Slide 11)</li>
-<li>Variable address is the memory address (l-value) with which it is associated. (Slide 12)</li>
-<li>Variable type determines the range of values of variables and the set of operations that are defined for values of that type. (Slide 13)</li>
-<li>Give an example of variable binding time at design time. (Slide 15)</li>
-<li>Give an example of variable binding time at implementation time. (Slide 15)</li>
-<li>Give an example of variable binding time at compile time. (Slide 15)</li>
-<li>Give an example of variable binding time at link time. (Slide 16)</li>
-</ol>
-
-<p>That's it!</p>
-
-<p>With this information, you should be able to score a higher mark on the quiz.
-You are welcome to ask me if you require further clarification.</p>
-
-<p>All the best,
-Dr Abdullah</p></div>
+                <div class="doctor-note-title">ملاحظات الدكتور:</div>
+                <div class="doctor-note-content">
+                    <p>الامتحان القصير الأول (Quiz 1) يغطي السلايدات من 5 إلى 16 من المحاضرة الثانية (Describing Syntax)</p>
+                    <p>لتحقيق درجة عالية يجب معرفة:</p>
+                    <ul>
+                        <li>مستخدمي اللغة (السلايد 5)</li>
+                        <li>ما هو الـ Lexeme مع أمثلة (السلايد 6)</li>
+                        <li>ما هو الـ Token مع أمثلة (السلايد 6)</li>
+                        <li>بالنسبة للقواعد النحوية (grammar) يجب معرفة:
+                            <ul>
+                                <li>الرمز البادئ (starting symbol) في القاعدة</li>
+                                <li>عدد القواعد (rules) في القاعدة</li>
+                                <li>عدد الرموز النهائية (terminal symbols)</li>
+                                <li>عدد الرموز غير النهائية (nonterminal symbols)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>هذه المعلومات كافية لتحقيق درجة عالية في الكويز.</p>
+                </div>
             </div>
             
             <div class="controls">
@@ -1422,44 +1595,38 @@ Dr Abdullah</p></div>
         </div>
 
         <div class="footer-note">
-            Good luck to everyone!
+            دعواتكم للمساعد الخفي والعاملين على الموقع بالتوفيق والسداد والزوجة الصالحة
         </div>
     </div>
 
     <script>
         // Quiz functionality
         function resetQuiz() {
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(radio => radio.checked = false);
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach(radio => radio.checked = false);
 
-            const answerBoxes = document.querySelectorAll('.answer-box');
-            answerBoxes.forEach(box => {
-                box.style.display = 'none';
-                box.classList.remove('correct', 'incorrect');
-                const correctAnswer = box.getAttribute('data-correct-answer');
-                const explanation = box.getAttribute('data-explanation');
-                
-                // Reset content using the stored data-explanation
-            });
-
-            const questions = document.querySelectorAll('.question');
-            questions.forEach(q => {
-                q.classList.remove('answered-correct', 'answered-incorrect');
-            });
-            
-            updateProgress();
+    const answerBoxes = document.querySelectorAll('.answer-box');
+    answerBoxes.forEach(box => {
+        box.style.display = 'none';
+        box.classList.remove('correct', 'incorrect');
+        const correctAnswer = box.getAttribute('data-correct-answer');
+        if (correctAnswer) {
+            box.innerHTML = `Correct Answer: ${correctAnswer}`;
         }
+    });
+
+    // --- الإضافة الجديدة: إرجاع الايموجي للأصل ---
+    const questions = document.querySelectorAll('.question');
+    questions.forEach(q => {
+        q.classList.remove('answered-correct', 'answered-incorrect');
+    });
+}
 
         function showAllAnswers() {
             const answerBoxes = document.querySelectorAll('.answer-box');
             answerBoxes.forEach(box => {
                 const correctAnswer = box.dataset.correctAnswer;
-                // Retrieve explanation securely from data attribute
-                const explanation = box.dataset.explanation || '';
-                
-                // When showing all, we can show the explanation directly or keep it hidden. 
-                // Showing it directly is usually expected for "Show All Answers".
-                box.innerHTML = `Correct Answer: ${correctAnswer}<br><div class="explanation-container"><div class="explanation-content" style="display:block;">${explanation}</div></div>`;
+                box.innerHTML = `Correct Answer: ${correctAnswer}`;
                 box.style.display = 'block';
                 box.classList.add('correct');
             });
@@ -1471,15 +1638,6 @@ Dr Abdullah</p></div>
                 box.style.display = 'none';
                 box.classList.remove('correct', 'incorrect');
             });
-        }
-
-        function updateProgress() {
-            const radioButtons = document.querySelectorAll('input[type="radio"]:checked');
-            const answeredCount = radioButtons.length;
-            const progressPercent = Math.round((answeredCount / 11) * 100);
-            
-            document.getElementById('answered-count').textContent = answeredCount;
-            document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
         }
 
         // Theme toggle
@@ -1508,17 +1666,20 @@ Dr Abdullah</p></div>
             if(!slidesVisible) {
                 slidesSection.classList.remove('hidden');
                 questionsSection.style.display = 'none';
-                slidesToggle.innerHTML = '<span class="btn-icon">📝</span> Questions';
+                slidesToggle.innerHTML = '<span class="btn-icon">📝</span> الأسئلة';
                 slidesVisible = true;
-                if(document.querySelector('.view-btn.active').textContent.includes('Slides')) {
+                // Make sure carousel is initialized
+                if(document.querySelector('.view-btn.active').textContent.includes('عرض شرائح')) {
                     changeView('carousel');
                 }
+                // Scroll to slides
                 slidesSection.scrollIntoView({ behavior: 'smooth' });
             } else {
                 slidesSection.classList.add('hidden');
                 questionsSection.style.display = 'block';
                 slidesToggle.innerHTML = '<span class="btn-icon">📚</span> السلايدات المحدده';
                 slidesVisible = false;
+                // Scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
@@ -1529,13 +1690,15 @@ Dr Abdullah</p></div>
             const carouselView = document.getElementById('carousel-view');
             const viewButtons = document.querySelectorAll('.view-btn');
             
+            // Update active button
             viewButtons.forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.textContent.includes(viewType === 'list' ? 'List' : 'Slides')) {
+                if (btn.textContent.includes(viewType === 'list' ? 'قائمة' : 'شرائح')) {
                     btn.classList.add('active');
                 }
             });
             
+            // Show selected view
             if(viewType === 'list') {
                 listView.style.display = 'flex';
                 carouselView.style.display = 'none';
@@ -1548,175 +1711,254 @@ Dr Abdullah</p></div>
 
         // Carousel functionality
         let currentSlide = 0;
-        // Updated content to match List View with highlighting and tooltips
-        const slides = [
-            {
-                id: 6,
-                title: "Names",
-                content: `<p>Names are one of the <span class="word-tooltip" data-meaning="أساسي">fundamental</span> attributes of variables.</p>
+        // Replace the existing slides array in your JavaScript with this corrected version
+const slides = [
+    {
+        id: 5,
+        title: "Introduction: Language Users",
+        content: `<p>Users of a language definition:</p>
+                <ul>
+                    <li><strong>Other language designers</strong> (evaluators)</li>
+                    <li><strong>Implementers</strong></li>
+                    <li><strong>Programmers</strong> (the users of the language)</li>
+                </ul>`
+    },
+    {
+        id: 6,
+        title: "The General Problem of Describing Syntax: Terminology",
+        content: `<ul>
+                    <li>A <strong>sentence</strong> (statement) is a string of characters over some alphabet</li>
+                    <li>A <strong>language</strong> is a set of sentences (statements)</li>
+                    <li>A <strong>lexeme</strong> is the lowest level syntactic unit of a language
                         <ul>
-                            <li><span class="slide-highlight">Names are also <span class="word-tooltip" data-meaning="مرتبط">associated</span> with subprograms, formal parameters, and other program <span class="word-tooltip" data-meaning="تراكيب / بناءات">constructs</span>.</span></li>
-                            <li><span class="slide-highlight">The term identifier is often used <span class="word-tooltip" data-meaning="بالتبادل">interchangeably</span> with name.</span></li>
+                            <li>Examples: <code>*</code>, <code>sum</code>, <code>begin</code></li>
+                            <li>Includes: operators, special words, numerical literals, etc.</li>
                         </ul>
-                        <p>Design issues for names:</p>
+                    </li>
+                    <li>A <strong>token</strong> is a category of lexemes
                         <ul>
-                            <li>Are names case sensitive?</li>
-                            <li>Are special words of the language reserved words or keywords?</li>
-                        </ul>`
-            },
-            {
-                id: 8,
-                title: "Names Forms (continued)",
-                content: `<p>Special Characters:</p>
-                        <ul>
-                            <li><strong>PHP:</strong> <span class="slide-highlight">all variable names must begin with dollar signs ($).</span></li>
-                            <li>Perl: all variable names begin with special characters ($, @ or %), which specify the variable's type.</li>
-                            <li>Ruby: variable names that begin with @ are instance variables; those that begin with @@ are class variables.</li>
-                        </ul>`
-            },
-            {
-                id: 11,
-                title: "Variables",
-                content: `<p><span class="slide-highlight">A variable is an <span class="word-tooltip" data-meaning="تجريد (فكرة عامة)">abstraction</span> of a memory cell or a collection of cells.</span></p>
-                        <p>Variables can be characterized as a sextuple of <span class="word-tooltip" data-meaning="خصائص / سمات">attributes</span>:</p>
-                        <ol>
-                            <li>Name</li>
-                            <li>Address</li>
-                            <li>Value</li>
-                            <li>Type</li>
-                            <li>Lifetime</li>
-                            <li>Scope</li>
-                        </ol>`
-            },
-            {
-                id: 12,
-                title: "Variables Attributes",
-                content: `<ul>
-                            <li><strong>Name:</strong> the most common names in programs and not all variables have them.</li>
-                            <li><strong>Address:</strong> <span class="slide-highlight">the memory address (I-value) with which it is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.</span>
-                                <ul>
-                                    <li>A variable may have different addresses at different times during execution (like in a subprogram calls).</li>
-                                    <li>A variable may have different addresses at different places in a program (like in dynamic-allocation).</li>
-                                    <li>If two variable names can be used to access the same memory location, they are called aliases.</li>
-                                    <li>Aliases are created via pointers, reference variables, C and C++ unions types.</li>
-                                    <li>Aliases are harmful to readability (program readers must remember all of them).</li>
-                                </ul>
-                            </li>
-                        </ul>`
-            },
-            {
-                id: 13,
-                title: "Variables Attributes (continued)",
-                content: `<ul>
-                            <li><strong>Type:</strong> <span class="slide-highlight">determines the range of values of variables and the set of operations that are defined for values of that type.</span>
-                                <ul>
-                                    <li>In the case of floating point, type also determines the precision.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Value:</strong> the contents of the location with which the variable is <span class="word-tooltip" data-meaning="مرتبط">associated</span>.
-                                <ul>
-                                    <li>The I-value of a variable is its address.</li>
-                                    <li>The r-value of a variable is its value (needs I-value to be accessed first).</li>
-                                    <li>Abstract memory cell: the physical cell or collection of cells <span class="word-tooltip" data-meaning="مرتبط">associated</span> with a variable.</li>
-                                </ul>
-                            </li>
-                        </ul>`
-            },
-            {
-                id: 15,
-                title: "Possible Binding Times",
-                content: `<p><strong>Language Design Time:</strong></p>
-                        <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> operator symbols to operations.</span>
-                                <ul><li>E.g., the asterisk symbol (*) is usually bound to the multiplication operation...etc.</li></ul>
-                                <div class="slide-code">area = length * width;</div>
-                            </li>
+                            <li>Example: <code>identifier</code> (category for lexemes like <code>sum</code>, <code>count</code>)</li>
                         </ul>
-                        
-                        <p><strong>Language <span class="word-tooltip" data-meaning="تنفيذ">Implementation</span> Time:</strong></p>
+                    </li>
+                </ul>`
+    },
+    {
+        id: 7,
+        title: "Example: Lexemes and Tokens",
+        content: `<p>Consider the following Java statement:</p>
+                <div class="grammar-example">index = 2 * count + 17;</div>
+                
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th>Lexemes</th>
+                            <th>Tokens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>index</code></td><td><strong>identifier</strong></td></tr>
+                        <tr><td><code>=</code></td><td><strong>equal_sign</strong></td></tr>
+                        <tr><td><code>2</code></td><td><strong>int_literal</strong></td></tr>
+                        <tr><td><code>*</code></td><td><strong>mult_op</strong></td></tr>
+                        <tr><td><code>count</code></td><td><strong>identifier</strong></td></tr>
+                        <tr><td><code>+</code></td><td><strong>plus_op</strong></td></tr>
+                        <tr><td><code>17</code></td><td><strong>int_literal</strong></td></tr>
+                        <tr><td><code>;</code></td><td><strong>semicolon</strong></td></tr>
+                    </tbody>
+                </table>`
+    },
+    {
+        id: 8,
+        title: "Formal Definition of Languages",
+        content: `<p><strong>Recognizers:</strong></p>
+                <ul>
+                    <li>A recognition device reads input strings over the alphabet of the language and decides whether the input strings belong to the language (accept or reject the given input strings)</li>
+                    <li>Example: syntax analysis (parsing) part of a compiler
                         <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> floating point data type to a representation (a range of possible values).</span>
-                                <div class="slide-code">float area = 20.2;</div>
-                            </li>
+                            <li>The syntax analyzer determines whether the given programs are syntactically correct</li>
                         </ul>
-                        
-                        <p><strong><span class="word-tooltip" data-meaning="وقت الترجمة">Compile Time</span>:</strong></p>
+                    </li>
+                </ul>
+                
+                <p><strong>Generators:</strong></p>
+                <ul>
+                    <li>A device that generates sentences of a language</li>
+                    <li>One can determine if the syntax of a particular sentence is syntactically correct by comparing it to the structure of the generator</li>
+                </ul>`
+    },
+    {
+        id: 9,
+        title: "BNF and Context-Free Grammars",
+        content: `<p><strong>Context-Free Grammars:</strong></p>
+                <ul>
+                    <li>Developed by Noam Chomsky in the mid-1950s</li>
+                    <li>Language generators, meant to describe the syntax of natural languages</li>
+                    <li>Define a class of languages called context-free languages</li>
+                </ul>
+                
+                <p><strong>Backus-Naur Form (1959):</strong></p>
+                <ul>
+                    <li>Invented by John Backus to describe the syntax of Algol 58</li>
+                    <li>BNF is equivalent to context-free grammars</li>
+                </ul>`
+    },
+    {
+        id: 10,
+        title: "BNF Fundamentals",
+        content: `<ul>
+                    <li>BNF is a natural notation for describing syntax</li>
+                    <li>In BNF, abstractions are used to represent classes of syntactic structures
                         <ul>
-                            <li><span class="slide-highlight">Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a variable to a type in C or Java.</span>
-                                <div class="slide-code">int factor;</div>
-                            </li>
-                        </ul>`
-            },
-            {
-                id: 16,
-                title: "Possible Binding Times (continued)",
-                content: `<p><strong>Load Time:</strong></p>
-                        <ul>
-                            <li>Example: bind a C or C++ <span class="word-tooltip" data-meaning="ثابت">static</span> variable to a memory cell.</li>
-                            <li>E.g., binding the previous "area" variable to the memory cell (a storage) "0x00000000"</li>
+                            <li>They act like syntactic variables (also called <em>nonterminal symbols</em>)</li>
                         </ul>
-
-                        <p><strong>Link Time:</strong></p>
+                    </li>
+                </ul>
+                
+                <p><strong>Example:</strong></p>
+                <ul>
+                    <li>A simple Java assignment statement might be represented by the abstraction <code>&lt;assign&gt;</code></li>
+                    <li>Pointed brackets are often used to delimit names of abstractions</li>
+                    <li>The actual definition of <code>&lt;assign&gt;</code> can be given by:
+                        <div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+                    </li>
+                </ul>`
+    },
+    {
+        id: 11,
+        title: "BNF Fundamentals (continued)",
+        content: `<ul>
+                    <li><strong>Terminals</strong> are lexemes or tokens</li>
+                    <li>A <strong>rule</strong> has a left-hand side (LHS), which is a nonterminal, and a right-hand side (RHS), which is a string of terminals and/or nonterminals</li>
+                    <li>Rules are also called <strong>productions</strong></li>
+                </ul>`
+    },
+    {
+        id: 12,
+        title: "BNF Fundamentals (continued)",
+        content: `<div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+                
+                <li>The text on the left side of the arrow, which is aptly called the <strong>left-hand side (LHS)</strong>, is the abstraction being defined.</li>
+                
+                <li>The text to the right of the arrow is the definition of the LHS. It is called the <strong>right-hand side (RHS)</strong> and consists of some mixture of tokens, lexemes, and references to other abstractions. (Actually, tokens are also abstractions.)</li>
+                
+                <li>Altogether, the definition is called a <strong>rule</strong>, or <strong>production</strong>.</li>
+                
+                <li>In the example rule just given, the abstractions <code>&lt;var&gt;</code> and <code>&lt;expression&gt;</code> obviously must be defined for the <code>&lt;assign&gt;</code> definition to be useful.</li>`
+    },
+    {
+        id: 13,
+        title: "How a rule can be read?",
+        content: `<div class="grammar-example">&lt;assign&gt; → &lt;var&gt; = &lt;expression&gt;</div>
+                
+                <li>This particular rule specifies that the abstraction <code>&lt;assign&gt;</code> is defined as an instance of the abstraction <code>&lt;var&gt;</code>, followed by the lexeme <code>=</code> followed by an instance of the abstraction <code>&lt;expression&gt;</code>.</li>
+                
+                <li><strong>One example sentence whose syntactic structure is described by the rule above is:</strong></li>
+                <div class="grammar-example">total = subtotal1 + subtotal2</div>`
+    },
+    {
+        id: 14,
+        title: "BNF Fundamentals (continued)",
+        content: `<ul>
+                    <li><strong>Nonterminals</strong> are often enclosed in "angle brackets" (abstraction)</li>
+                    <li><strong>Examples of BNF rules:</strong>
+                        <div class="grammar-example">
+                            <div class="rule">&lt;ident_list&gt; → identifier | identifier, &lt;ident_list&gt;</div>
+                            <div class="rule">&lt;if_stmt&gt; → if &lt;logic_expr&gt; then &lt;stmt&gt;</div>
+                        </div>
+                    </li>
+                    <li><strong>Grammar:</strong> a finite non-empty set of rules</li>
+                    <li>A <strong>start symbol</strong> is a special element of the nonterminals of a grammar
                         <ul>
-                            <li><span class="slide-highlight">Example: a call to a library subprogram is bound to the subprogram code at link time.</span>
-                                <div class="slide-code">int m = java.lang.Math.max(20, 22);</div>
-                            </li>
+                            <li>Usually represents a complete program</li>
+                            <li>Often named <code>&lt;program&gt;</code> or similar</li>
                         </ul>
-                        
-                        <p><strong><span class="word-tooltip" data-meaning="وقت التشغيل">Run Time</span>:</strong></p>
-                        <ul>
-                            <li>Example: <span class="word-tooltip" data-meaning="ربط">bind</span> a non-static local variable to a memory cell.</li>
-                            <li>E.g., variables declared in Java methods.</li>
-                        </ul>`
-            }
-        ];
+                    </li>
+                </ul>`
+    },
+    {
+        id: 15,
+        title: "BNF Rules",
+        content: `<li>An <strong>abstraction</strong> (or nonterminal symbol) can have more than one RHS:</li>
+                <div class="grammar-example">
+                    <div class="rule">&lt;stmt&gt; → &lt;single_stmt&gt;</div>
+                    <div class="rule">&lt;stmt&gt; → begin &lt;stmt_list&gt; end</div>
+                </div>
+                
+                <li>These two rules can be written as:</li>
+                <div class="grammar-example">&lt;stmt&gt; → &lt;single_stmt&gt; | begin &lt;stmt_list&gt; end</div>`
+    },
+    {
+        id: 16,
+        title: "BNF Rules: More Examples",
+        content: `<li>A Java if statement can be described with the rules:</li>
+                <div class="grammar-example">
+                    <div class="rule">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt;</div>
+                    <div class="rule">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt; else &lt;stmt&gt;</div>
+                </div>
+                
+                <li>Or combined into a single rule using the pipe symbol:</li>
+                <div class="grammar-example">&lt;if_stmt&gt; → if ( &lt;logic_expr&gt; ) &lt;stmt&gt; | if ( &lt;logic_expr&gt; ) &lt;stmt&gt; else &lt;stmt&gt;</div>`
+    }
+];
 
         function createCarouselSlides() {
-            const slidesContainer = document.getElementById('slides-container');
-            slidesContainer.innerHTML = '';
-            
-            slides.forEach((slide, index) => {
-                const slideElement = document.createElement('div');
-                slideElement.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
-                slideElement.id = `slide-${slide.id}`;
-                
-                slideElement.innerHTML = `
-                    <div class="carousel-header">
-                        <div class="carousel-slide-number">${slide.id}</div>
-                        <div class="carousel-slide-title">${slide.title}</div>
-                    </div>
-                    <div class="carousel-slide-content">
-                        ${slide.content}
-                    </div>
-                `;
-                
-                slidesContainer.appendChild(slideElement);
-            });
-        }
+    // نحدد الحاوية الجديدة
+    const slidesContainer = document.getElementById('slides-container');
+    
+    // تنظيف المحتوى القديم
+    slidesContainer.innerHTML = '';
+    
+    // إنشاء الشرائح
+    slides.forEach((slide, index) => {
+        const slideElement = document.createElement('div');
+        // نضيف كلاس active لأول شريحة فقط
+        slideElement.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+        slideElement.id = `slide-${slide.id}`;
+        
+        slideElement.innerHTML = `
+            <div class="carousel-header">
+                <div class="carousel-slide-number">${slide.id}</div>
+                <div class="carousel-slide-title">${slide.title}</div>
+            </div>
+            <div class="carousel-slide-content">
+                ${slide.content}
+            </div>
+        `;
+        
+        // إضافة الشريحة للحاوية
+        slidesContainer.appendChild(slideElement);
+    });
+}
 
         function initializeCarousel() {
-            createCarouselSlides();
-            
-            const indicatorsContainer = document.getElementById('carousel-indicators');
-            indicatorsContainer.innerHTML = '';
-            
-            slides.forEach((slide, index) => {
-                const indicator = document.createElement('div');
-                indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
-                indicator.onclick = () => goToSlide(index);
-                indicatorsContainer.appendChild(indicator);
-            });
-            
-            showSlide(0);
-        }
+    createCarouselSlides(); // الدالة التي تنشئ محتوى الشرائح
+    
+    const indicatorsContainer = document.getElementById('carousel-indicators');
+    indicatorsContainer.innerHTML = ''; // مسح القديم
+    
+    // إنشاء النقاط
+    slides.forEach((slide, index) => {
+        const indicator = document.createElement('div');
+        // إضافة كلاس active للأولى
+        indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
+        indicator.onclick = () => goToSlide(index);
+        indicatorsContainer.appendChild(indicator);
+    });
+    
+    // عرض الشريحة الأولى
+    showSlide(0);
+}
 
         function showSlide(index) {
+            // Hide all slides
             document.querySelectorAll('.carousel-slide').forEach(slide => {
                 slide.classList.remove('active');
             });
             
+            // Show selected slide
             document.getElementById(`slide-${slides[index].id}`).classList.add('active');
             
+            // Update indicators
             document.querySelectorAll('.carousel-indicator').forEach((indicator, i) => {
                 indicator.classList.toggle('active', i === index);
             });
@@ -1741,67 +1983,38 @@ Dr Abdullah</p></div>
         }
 
         // Event listeners for radio buttons
-        const radioButtons = document.querySelectorAll('input[type="radio"]');
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const questionNumber = e.target.name.substring(1);
-                const answerBox = document.getElementById(`answer${questionNumber}`);
-                const questionContainer = e.target.closest('.question');
-                
-                const correctAnswer = answerBox.getAttribute('data-correct-answer');
-                const userAnswer = e.target.value;
-                // Retrieve explanation securely from data attribute
-                const explanation = answerBox.getAttribute('data-explanation');
+const radioButtons = document.querySelectorAll('input[type="radio"]');
+radioButtons.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        const questionNumber = e.target.name.substring(1);
+        const answerBox = document.getElementById(`answer${questionNumber}`);
+        // نحدد عنصر السؤال الأب (الحاوية الكبيرة)
+        const questionContainer = e.target.closest('.question');
+        
+        const correctAnswer = answerBox.getAttribute('data-correct-answer');
+        const userAnswer = e.target.value;
 
-                questionContainer.classList.remove('answered-correct', 'answered-incorrect');
-                
-                let resultHtml = '';
+        // تنظيف الكلاسات القديمة أولاً (في حال غير إجابته)
+        questionContainer.classList.remove('answered-correct', 'answered-incorrect');
 
-                if (userAnswer === correctAnswer) {
-                    resultHtml = `✅ Correct!`;
-                    answerBox.classList.add('correct');
-                    answerBox.classList.remove('incorrect');
-                    questionContainer.classList.add('answered-correct');
-                    
-                    // Add the toggle button and hidden explanation with GOLD layout
-                    answerBox.innerHTML = `
-                        ${resultHtml}
-                        <div class="explanation-container">
-                            <button class="btn-explanation" onclick="this.parentElement.querySelector('.explanation-content').style.display='block'; this.style.display='none';">
-                                <span style="font-size:1.1em">💡</span> Show Explanation
-                            </button>
-                            <div class="explanation-content" style="display:none;">
-                                ${explanation}
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // Correct format as requested
-                    resultHtml = `❌ Incorrect.`;
-                    answerBox.classList.add('incorrect');
-                    answerBox.classList.remove('correct');
-                    questionContainer.classList.add('answered-incorrect');
-                    
-                    // Add the Show Correct Choice button which reveals answer AND explanation immediately
-                    answerBox.innerHTML = `
-                        ${resultHtml}
-                        <button class="btn-show-correct" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">
-                            Show Correct Choice
-                        </button>
-                        <div class="reveal-content" style="display:none; margin-top:10px;">
-                            <div style="margin-bottom:10px; font-weight:bold;">Correct Answer: ${correctAnswer}</div>
-                            <div class="explanation-content" style="display:block;">
-                                ${explanation}
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                answerBox.style.display = 'block';
-                
-                updateProgress();
-            });
-        });
+        if (userAnswer === correctAnswer) {
+            answerBox.innerHTML = '✅ Correct!';
+            answerBox.classList.add('correct');
+            answerBox.classList.remove('incorrect');
+            
+            // إضافة كلاس الصح للسؤال (لتغيير الايموجي)
+            questionContainer.classList.add('answered-correct');
+        } else {
+            answerBox.innerHTML = `❌ Incorrect. Correct Answer: ${correctAnswer}`;
+            answerBox.classList.add('incorrect');
+            answerBox.classList.remove('correct');
+            
+            // إضافة كلاس الخطأ للسؤال (لتغيير الايموجي)
+            questionContainer.classList.add('answered-incorrect');
+        }
+        answerBox.style.display = 'block';
+    });
+});
 
         // Keyboard navigation for carousel
         document.addEventListener('keydown', (e) => {
@@ -1813,6 +2026,7 @@ Dr Abdullah</p></div>
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
+            // Set theme
             const savedTheme = localStorage.getItem('theme') || 'light';
             const themeToggle = document.getElementById('themeToggle');
             
@@ -1821,15 +2035,15 @@ Dr Abdullah</p></div>
                 themeToggle.innerHTML = '<span class="btn-icon">☀️</span> Light Mode';
             }
             
+            // Set default view to carousel
             changeView('carousel');
             
+            // Add animations
             const questions = document.querySelectorAll('.question');
             questions.forEach((question, index) => {
                 question.style.animationDelay = `${index * 0.1}s`;
                 question.style.animation = 'fadeIn 0.5s ease forwards';
             });
-            
-            updateProgress();
         });
     </script>
 </body>
